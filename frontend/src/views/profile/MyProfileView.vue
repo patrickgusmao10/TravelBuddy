@@ -194,7 +194,7 @@ async function handleSubmit() {
           Salvar Alterações
         </BaseButton>
 
-        <router-link to="/feed" class="btn btn-outline-secondary btn-lg">
+        <router-link to="/feed/geral" class="btn btn-outline-secondary btn-lg">
           Cancelar
         </router-link>
       </div>

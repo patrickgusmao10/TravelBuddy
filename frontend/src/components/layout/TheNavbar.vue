@@ -24,7 +24,7 @@ const { isAuthenticated, currentUser, logout } = useAuth()
         </template>
 
         <template v-else>
-          <router-link to="/feed" class="nav-link">
+          <router-link to="/feed/geral" class="nav-link">
             Feed
           </router-link>
 
