@@ -2,6 +2,9 @@
 import { reactive, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '../../stores/auth'
+import BaseInput from '../../components/base/BaseInput.vue'
+import BaseButton from '../../components/base/BaseButton.vue'
+import FormCard from '../../components/base/FormCard.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -37,77 +40,29 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <div class="container mt-5">
-    <div class="row justify-content-center">
-      <div class="col-md-6 col-lg-5">
-        <div class="auth-card">
+  <FormCard title="Entrar no TravelBuddy">
+    <form @submit.prevent="handleSubmit">
+      <BaseInput label="E-mail ou Usuário" v-model="form.login" />
+      <BaseInput label="Senha" type="password" v-model="form.password" />
 
-          <div class="auth-header">
-            <h2 class="fw-bold mb-0">
-              Entrar no TravelBuddy
-            </h2>
-          </div>
+      <p v-if="apiErrorMessage" class="text-danger small">
+        {{ apiErrorMessage }}
+      </p>
 
-          <div class="p-4">
-            <form @submit.prevent="handleSubmit">
-
-              <div class="mb-3">
-                <label for="login" class="form-label">
-                  E-mail ou Usuário
-                </label>
-
-                <input
-                  id="login"
-                  v-model="form.login"
-                  type="text"
-                  class="form-control"
-                  required
-                />
-              </div>
-
-              <div class="mb-3">
-                <label for="password" class="form-label">
-                  Senha
-                </label>
-
-                <input
-                  id="password"
-                  v-model="form.password"
-                  type="password"
-                  class="form-control"
-                  required
-                />
-              </div>
-
-              <p
-                v-if="apiErrorMessage"
-                class="text-danger small"
-              >
-                {{ apiErrorMessage }}
-              </p>
-
-              <div class="d-grid gap-2 mb-3">
-                <button
-                  type="submit"
-                  class="btn btn-primary btn-lg"
-                  :disabled="isSubmitting"
-                >
-                  {{ isSubmitting ? 'Entrando...' : 'Entrar' }}
-                </button>
-              </div>
-
-              <p class="text-center text-muted">
-                Não tem uma conta?
-                <router-link to="/register">
-                  Crie uma agora
-                </router-link>
-              </p>
-
-            </form>
-          </div>
-
-        </div>
+      <div class="d-grid gap-2 mb-3">
+        <BaseButton
+          type="submit"
+          :loading="isSubmitting"
+          loading-text="Entrando..."
+        >
+          Entrar
+        </BaseButton>
       </div>
-    </div>
-  </div>
+
+      <p class="text-center text-muted">
+        Não tem uma conta?
+        <router-link to="/register">Crie uma agora</router-link>
+      </p>
+    </form>
+  </FormCard>
 </template>

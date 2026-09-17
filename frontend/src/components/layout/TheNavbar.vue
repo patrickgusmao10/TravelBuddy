@@ -1,56 +1,54 @@
 <script setup>
-import { useAuthStore } from '../../stores/auth'
-import { useRouter } from 'vue-router'
+import { useAuth } from '../../composables/useAuth'
+import { getProfilePictureUrl } from '../../utils/media'
 
-const authStore = useAuthStore()
-const router = useRouter()
-
-async function handleLogout() {
-  await authStore.logout()
-  router.push({ name: 'login' })
-}
+const { isAuthenticated, currentUser, logout } = useAuth()
 </script>
 
 <template>
-  <nav>
-    <router-link to="/">Início</router-link>
+  <nav class="navbar navbar-expand-lg navbar-light bg-white sticky-top shadow-sm">
+    <div class="container-fluid px-lg-5">
+      <router-link class="navbar-brand" to="/">
+        <i class="bi bi-play-fill"></i> TRAVELBUDDY
+      </router-link>
 
-    <span> | </span>
+      <div class="d-flex align-items-center gap-2">
+        <template v-if="!isAuthenticated">
+          <router-link to="/login" class="btn btn-outline-primary px-4">
+            Entrar
+          </router-link>
 
-    <router-link to="/destinos">Destinos</router-link>
+          <router-link to="/register" class="btn btn-primary text-white px-4">
+            Criar Conta
+          </router-link>
+        </template>
 
-    <span> | </span>
+        <template v-else>
+          <router-link to="/feed" class="nav-link">
+            Feed
+          </router-link>
 
-    <router-link to="/feed/geral">Feed Geral</router-link>
+          <router-link
+            :to="{ name: 'my-profile' }"
+            class="nav-link d-flex align-items-center gap-2"
+          >
+            <img
+              :src="getProfilePictureUrl(currentUser?.profilePicture)"
+              alt=""
+              width="32"
+              height="32"
+              class="rounded-circle"
+              style="object-fit: cover;"
+            />
 
-    <template v-if="!authStore.isAuthenticated">
-      <span> | </span>
+            {{ currentUser?.username }}
+          </router-link>
 
-      <router-link to="/login">Login</router-link>
-
-      <span> | </span>
-
-      <router-link to="/register">Criar Conta</router-link>
-    </template>
-
-<template v-else>
-  <span> | </span>
-
-  <router-link :to="{ name: 'my-profile' }">
-    Meu Perfil
-  </router-link>
-
-  <span> | </span>
-
-  <span>
-    Olá, {{ authStore.user?.username }}
-  </span>
-
-  <span> | </span>
-
-  <button type="button" @click="handleLogout">
-    Sair
-  </button>
-</template>
+          <button class="btn btn-outline-dark btn-sm" @click="logout">
+            <i class="bi bi-box-arrow-right"></i> Sair
+          </button>
+        </template>
+      </div>
+    </div>
   </nav>
 </template>

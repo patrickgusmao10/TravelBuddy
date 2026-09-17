@@ -2,12 +2,14 @@
   <div class="app-layout">
     <TheNavbar />
 
-    <div class="app-body">
-      <TheSidebar />
+    <div class="container-fluid">
+      <div class="row">
+        <TheSidebar />
 
-      <main class="app-content">
-        <router-view />
-      </main>
+        <main class="col-12 col-md-9 col-lg-10 py-4">
+          <router-view />
+        </main>
+      </div>
     </div>
 
     <TheFooter />

@@ -2,6 +2,9 @@
 import { reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { register } from '../../services/authService'
+import BaseInput from '../../components/base/BaseInput.vue'
+import BaseButton from '../../components/base/BaseButton.vue'
+import FormCard from '../../components/base/FormCard.vue'
 
 const router = useRouter()
 
@@ -83,61 +86,59 @@ async function handleSubmit() {
 
 
 <template>
-  <div class="auth-page">
-    <h1>Criar Conta</h1>
-
+  <FormCard title="Criar Conta no TravelBuddy">
     <form @submit.prevent="handleSubmit">
-      <div class="field">
-        <label for="fullName">Nome completo</label>
-        <input id="fullName" type="text" v-model="form.fullName" />
-        <span v-if="errors.fullName" class="error-message">
-          {{ errors.fullName }}
-        </span>
-      </div>
+      <BaseInput
+        label="Nome de Usuário"
+        v-model="form.username"
+        :error="errors.username"
+      />
 
-      <div class="field">
-        <label for="username">Usuário</label>
-        <input id="username" type="text" v-model="form.username" />
-        <span v-if="errors.username" class="error-message">
-          {{ errors.username }}
-        </span>
-      </div>
+      <BaseInput
+        label="Nome Completo"
+        v-model="form.fullName"
+        :error="errors.fullName"
+      />
 
-      <div class="field">
-        <label for="email">E-mail</label>
-        <input id="email" type="email" v-model="form.email" />
-        <span v-if="errors.email" class="error-message">
-          {{ errors.email }}
-        </span>
-      </div>
+      <BaseInput
+        label="E-mail"
+        type="email"
+        v-model="form.email"
+        :error="errors.email"
+      />
 
-      <div class="field">
-        <label for="password">Senha</label>
-        <input id="password" type="password" v-model="form.password" />
-        <span v-if="errors.password" class="error-message">
-          {{ errors.password }}
-        </span>
-      </div>
+      <BaseInput
+        label="Senha"
+        type="password"
+        v-model="form.password"
+        :error="errors.password"
+      />
 
-      <div class="field">
-        <label for="confirmPassword">Confirmar senha</label>
-        <input
-          id="confirmPassword"
-          type="password"
-          v-model="form.confirmPassword"
-        />
-        <span v-if="errors.confirmPassword" class="error-message">
-          {{ errors.confirmPassword }}
-        </span>
-      </div>
+      <BaseInput
+        label="Confirmar Senha"
+        type="password"
+        v-model="form.confirmPassword"
+        :error="errors.confirmPassword"
+      />
 
-      <p v-if="apiErrorMessage" class="api-error">
+      <p v-if="apiErrorMessage" class="text-danger small">
         {{ apiErrorMessage }}
       </p>
 
-      <button type="submit" :disabled="isSubmitting">
-        {{ isSubmitting ? 'Criando conta...' : 'Criar Minha Conta' }}
-      </button>
+      <div class="d-grid gap-2 mb-3">
+        <BaseButton
+          type="submit"
+          :loading="isSubmitting"
+          loading-text="Criando conta..."
+        >
+          Criar Minha Conta
+        </BaseButton>
+      </div>
+
+      <p class="text-center text-muted">
+        Já tem uma conta?
+        <router-link to="/login">Faça login</router-link>
+      </p>
     </form>
-  </div>
+  </FormCard>
 </template>

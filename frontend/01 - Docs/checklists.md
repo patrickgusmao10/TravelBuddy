@@ -393,3 +393,41 @@
 ## Status
 
 **Aula 05 - Desenvolvimento e testes concluídos.**
+
+# Checklist - Aula 06
+
+## Parte A — Backend: Checkpoint de Consistência (Sem Código Novo)
+
+- [x] Alguma rota (`*Routes.js`) contém lógica de negócio, em vez de só declarar verbo + caminho + middlewares + controller?
+- [x] Algum Controller consulta o Model diretamente, sem passar pelo Service?
+- [x] Algum Service faz referência a `req` / `res`?
+- [x] Todo Controller usa `success()` / `error()` de `apiResponse.js`?
+- [x] Toda rota que chama uma função async está envolvida em `asyncHandler`?
+- [x] Toda validação de entrada usa `express-validator`, sem nenhum `if` manual escondido?
+- [x] `config/constants.js` não tem nenhuma constante solta sem uso, nem nenhum valor de validação fora dela?
+- [x] A constante de limite da bio (Aula 05) é usada exatamente uma vez, no lugar certo?
+
+### Checklist desta etapa
+
+- [x] `checkpoint-01.md` criado e respondido
+- [x] Todos os endpoints já construídos continuam respondendo como esperado
+
+## Parte B — Frontend: Componentização e Consistência Visual
+
+- [x] `bootstrap-icons` incluído via CDN
+- [x] Os três componentes-base (`BaseInput`, `BaseButton` e `FormCard`) criados em `src/components/base/`
+- [x] As três telas refatoradas para usar `BaseInput` / `BaseButton` / `FormCard`
+- [x] Tela de Registro agora visualmente consistente com Login/Perfil (usando a cor de marca do seu projeto, sem nenhuma cor nova introduzida)
+- [x] `composables/useAuth.js` criado
+- [x] Guarda de rota atualizado para usar `useAuth()`
+- [x] Navbar atualizada para usar `useAuth()`
+- [x] Nenhum link novo aponta para uma funcionalidade que seu projeto ainda não construiu
+
+## Checklist de testes
+
+- [x] Cadastro → confirme o redirecionamento ao Login, com a tela agora estilizada.
+- [x] Login → confirme o redirecionamento à sua tela principal.
+- [x] Navbar → confirme a troca correta entre estado logado/deslogado.
+- [x] Edição de Perfil → confirme que os três comportamentos da Atividade 05 (dados reais, edição, upload de foto) continuam funcionando, agora passando pelos componentes-base.
+- [x] Guarda de rota → deslogado, tente acessar a URL de uma tela protegida diretamente → confirme o redirecionamento ao Login.
+- [x] Console do DevTools sem nenhum erro novo durante todo o teste.
