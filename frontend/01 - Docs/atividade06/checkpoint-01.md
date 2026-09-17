@@ -44,6 +44,12 @@ As validações de cadastro, login e atualização de perfil estão centralizada
 
 Os valores utilizados nas validações estão centralizados em `config/constants.js`, evitando valores de validação soltos pelo código. A constante `DESCRIPTION_MAX` permanece definida e reservada para uma funcionalidade futura, conforme previsto no projeto.
 
+### 9. Os erros lançados pelos Services utilizam `error.status` quando necessário?
+
+**Sim.**
+
+Os erros que possuem um status HTTP semanticamente definido utilizam `error.status`, como em `getPublicProfile`, que retorna status 404 quando o usuário não é encontrado. Os casos já documentados de duplicidade de cadastro e credenciais de login incorretas permanecem sem status específico, conforme previsto no roteiro.
+
 ## Conclusão
 
 A revisão dos módulos `search` e `user` confirmou que a arquitetura atual mantém a separação de responsabilidades entre Route, Controller, Service e Model. As validações, respostas da API e tratamento das funções assíncronas também seguem o padrão adotado pelo projeto.
