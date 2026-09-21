@@ -10,6 +10,8 @@ var userRoutes = require('./modules/user/userRoutes');
 var errorHandler = require('./middlewares/errorHandler');
 var sequelize = require('./config/database');
 
+require('./config/associations');
+
 var app = express();
 
 app.use(logger('dev'));

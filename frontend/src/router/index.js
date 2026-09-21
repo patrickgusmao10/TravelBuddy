@@ -27,16 +27,23 @@ const routes = [
   },
 
   {
+    path: '/destinos/upload',
+    name: 'destination-upload',
+    component: () => import('../views/UploadView.vue'),
+    meta: { requiresAuth: true }
+  },
+
+  {
     path: '/destinos/:id',
     name: 'destination-detail',
     component: () => import('../views/DestinationDetailView.vue')
   },
 
   {
-  path: '/profile/me',
-  name: 'my-profile',
-  component: () => import('../views/profile/MyProfileView.vue'),
-  meta: { requiresAuth: true }
+    path: '/profile/me',
+    name: 'my-profile',
+    component: () => import('../views/profile/MyProfileView.vue'),
+    meta: { requiresAuth: true }
   },
 
   {
@@ -120,7 +127,7 @@ const routes = [
     component: () => import('../views/admin/AdminModerationView.vue'),
     meta: { requiresAuth: true, requiresAdmin: true }
   },
-  
+
   {
     path: '/admin/usuarios',
     name: 'admin-users',

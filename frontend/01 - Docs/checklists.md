@@ -431,3 +431,61 @@
 - [x] Edição de Perfil → confirme que os três comportamentos da Atividade 05 (dados reais, edição, upload de foto) continuam funcionando, agora passando pelos componentes-base.
 - [x] Guarda de rota → deslogado, tente acessar a URL de uma tela protegida diretamente → confirme o redirecionamento ao Login.
 - [x] Console do DevTools sem nenhum erro novo durante todo o teste.
+
+# Checklist - Aula 07
+
+## Parte A — Backend: Upload da Entidade Principal
+
+- [x] Projeto identificado como Grupo B
+- [x] Model `Destination` criado para a entidade principal
+- [x] Tabela `destinations` configurada
+- [x] Associação entre `Destination` e `User` configurada
+- [x] Campo `destinationsCount` utilizado no `User`
+- [x] Pasta `public/uploads/destinations` criada
+- [x] Middleware `destinationMulter.js` criado
+- [x] Upload configurado para aceitar uma imagem
+- [x] Validação dos campos de texto implementada
+- [x] Service de destinos implementado
+- [x] Controller de destinos implementado
+- [x] Rota `POST /api/destinations/upload` criada
+- [x] Ordem dos middlewares configurada como autenticação → Multer → validação → controller
+- [x] Rota de destinos registrada na API
+- [x] Upload válido testado com sucesso
+- [x] Arquivo enviado salvo em `public/uploads/destinations`
+- [x] Registro do destino criado no banco de dados
+- [x] `destinationsCount` incrementado após upload válido
+- [x] Upload sem autenticação testado
+- [x] Upload sem imagem testado
+- [x] Upload sem título testado
+- [x] Upload de arquivo que não é imagem testado
+
+## Parte B — Frontend: Upload da Entidade Principal
+
+- [x] Tela de envio de destino criada
+- [x] Rota `/destinos/upload` configurada
+- [x] Rota de upload protegida por autenticação
+- [x] Link `Enviar Destino` disponível na navegação
+- [x] Campo de título implementado
+- [x] Campo de descrição implementado
+- [x] Contador de caracteres da descrição implementado
+- [x] Seleção da imagem do destino implementada
+- [x] Preview local da imagem implementado
+- [x] Formulário utiliza `FormData`
+- [x] Upload integrado ao endpoint `POST /api/destinations/upload`
+- [x] Barra de progresso do upload implementada
+- [x] Mensagem de sucesso exibida após o envio
+- [x] Upload multipart confirmado no DevTools
+- [x] `Content-Type: multipart/form-data` com `boundary` confirmado no Network
+
+## Evidências da Aula 07
+
+- [x] `formulario-preenchido.jpg`
+- [x] `progresso-upload.png`
+- [x] `upload-multipart.jpg`
+- [x] `link-envio.jpg`
+
+## Documentação
+
+- [x] `ficha-preparacao.md` atualizada para a Aula 07
+- [x] `checklists.md` atualizado para a Aula 07
+- [x] Checklist de alcançabilidade realizado: a tela de upload é acessível pelo link `Enviar Destino` na navegação e a rota `/destinos/upload` está protegida por autenticação

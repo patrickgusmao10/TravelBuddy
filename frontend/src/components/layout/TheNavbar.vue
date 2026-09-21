@@ -29,6 +29,13 @@ const { isAuthenticated, currentUser, logout } = useAuth()
           </router-link>
 
           <router-link
+            :to="{ name: 'destination-upload' }"
+            class="nav-link"
+          >
+            Enviar Destino
+          </router-link>
+
+          <router-link
             :to="{ name: 'my-profile' }"
             class="nav-link d-flex align-items-center gap-2"
           >
