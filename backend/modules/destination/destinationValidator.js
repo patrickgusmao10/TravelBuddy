@@ -1,32 +1,38 @@
+const { body, validationResult } = require('express-validator');
 const { VALIDATION } = require('../../config/constants');
 
-function validateCreateDestination(req, res, next) {
-  const { title, description } = req.body;
+const validate = (req, res, next) => {
+  const errors = validationResult(req);
 
-  if (!title || title.trim().length === 0) {
-    return res.status(400).json({
-      success: false,
-      message: 'Título é obrigatório'
-    });
+  if (errors.isEmpty()) {
+    return next();
   }
 
-  if (title.length > VALIDATION.TITLE_MAX) {
-    return res.status(400).json({
-      success: false,
-      message: `Título deve ter no máximo ${VALIDATION.TITLE_MAX} caracteres`
-    });
-  }
+  const firstError = errors.array()[0].msg;
+  const error = new Error(firstError);
+  error.status = 400;
+  error.errors = errors.array();
 
-  if (description && description.length > VALIDATION.DESCRIPTION_MAX) {
-    return res.status(400).json({
-      success: false,
-      message: `Descrição deve ter no máximo ${VALIDATION.DESCRIPTION_MAX} caracteres`
-    });
-  }
-
-  next();
-}
-
-module.exports = {
-  validateCreateDestination
+  throw error;
 };
+
+exports.uploadValidator = [
+  body('title')
+    .notEmpty()
+    .withMessage('O título é obrigatório.')
+    .isLength({ max: VALIDATION.TITLE_MAX })
+    .withMessage(
+      `O título deve ter no máximo ${VALIDATION.TITLE_MAX} caracteres.`
+    )
+    .trim(),
+
+  body('description')
+    .isLength({ max: VALIDATION.DESCRIPTION_MAX })
+    .withMessage(
+      `A descrição deve ter no máximo ${VALIDATION.DESCRIPTION_MAX} caracteres.`
+    )
+    .optional({ checkFalsy: true })
+    .trim(),
+
+  validate
+];

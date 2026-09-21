@@ -437,19 +437,26 @@
 ## Parte A — Backend: Upload da Entidade Principal
 
 - [x] Projeto identificado como Grupo B
+- [x] Pasta `public/uploads/destinations` criada
+- [x] Constante `TITLE_MAX` adicionada em `config/constants.js`
 - [x] Model `Destination` criado para a entidade principal
 - [x] Tabela `destinations` configurada
-- [x] Associação entre `Destination` e `User` configurada
+- [x] `config/associations.js` criado
+- [x] Associação `User.hasMany(Destination)` configurada
+- [x] Associação `Destination.belongsTo(User)` configurada
+- [x] Associations carregadas antes do `sequelize.sync`
 - [x] Campo `destinationsCount` utilizado no `User`
-- [x] Pasta `public/uploads/destinations` criada
 - [x] Middleware `destinationMulter.js` criado
-- [x] Upload configurado para aceitar uma imagem
-- [x] Validação dos campos de texto implementada
+- [x] Upload configurado para aceitar uma imagem com `multer.single`
+- [x] Upload limitado a arquivos de imagem
+- [x] Limite de upload configurado para 4 MB
+- [x] Validator de destinos implementado com `express-validator`
 - [x] Service de destinos implementado
 - [x] Controller de destinos implementado
 - [x] Rota `POST /api/destinations/upload` criada
 - [x] Ordem dos middlewares configurada como autenticação → Multer → validação → controller
 - [x] Rota de destinos registrada na API
+- [x] Tabela `destinations` confirmada no banco com FK para `users`
 - [x] Upload válido testado com sucesso
 - [x] Arquivo enviado salvo em `public/uploads/destinations`
 - [x] Registro do destino criado no banco de dados
@@ -461,15 +468,19 @@
 
 ## Parte B — Frontend: Upload da Entidade Principal
 
+- [x] Service de destinos criado
+- [x] Service recebe `onUploadProgress` como parâmetro
+- [x] CSS `.progress-bar` implementado
+- [x] CSS `.thumbnail-preview` implementado
 - [x] Tela de envio de destino criada
 - [x] Rota `/destinos/upload` configurada
 - [x] Rota de upload protegida por autenticação
-- [x] Link `Enviar Destino` disponível na navegação
+- [x] Link `Enviar Destino` disponível na navegação para usuário autenticado
 - [x] Campo de título implementado
 - [x] Campo de descrição implementado
 - [x] Contador de caracteres da descrição implementado
 - [x] Seleção da imagem do destino implementada
-- [x] Preview local da imagem implementado
+- [x] Preview local da imagem implementado com `FileReader`
 - [x] Formulário utiliza `FormData`
 - [x] Upload integrado ao endpoint `POST /api/destinations/upload`
 - [x] Barra de progresso do upload implementada
@@ -480,12 +491,20 @@
 ## Evidências da Aula 07
 
 - [x] `formulario-preenchido.jpg`
-- [x] `progresso-upload.png`
+- [x] `progresso-upload.mp4`
 - [x] `upload-multipart.jpg`
 - [x] `link-envio.jpg`
+- [x] Print do curl de upload válido
+- [x] Print do curl de upload sem autenticação
+- [x] Print do curl de upload sem imagem
+- [x] Print do curl de upload sem título
+- [x] Print do curl de upload de arquivo que não é imagem
 
 ## Documentação
 
 - [x] `ficha-preparacao.md` atualizada para a Aula 07
 - [x] `checklists.md` atualizado para a Aula 07
-- [x] Checklist de alcançabilidade realizado: a tela de upload é acessível pelo link `Enviar Destino` na navegação e a rota `/destinos/upload` está protegida por autenticação
+
+## Checklist de alcançabilidade
+
+- [x] A tela de upload é alcançável após a autenticação pelo link `Enviar Destino` disponível na navegação. Ao clicar no link, o Vue Router direciona o usuário para `/destinos/upload` sem recarregar a página. A rota utiliza `meta.requiresAuth`, portanto um usuário não autenticado que tente acessá-la diretamente é redirecionado para a tela de login.
