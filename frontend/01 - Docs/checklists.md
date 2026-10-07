@@ -508,3 +508,64 @@
 ## Checklist de alcançabilidade
 
 - [x] A tela de upload é alcançável após a autenticação pelo link `Enviar Destino` disponível na navegação. Ao clicar no link, o Vue Router direciona o usuário para `/destinos/upload` sem recarregar a página. A rota utiliza `meta.requiresAuth`, portanto um usuário não autenticado que tente acessá-la diretamente é redirecionado para a tela de login.
+
+# Checklist - Aula 08
+
+## Parte A — Backend: Detalhe e Feed Paginado
+
+- [x] Projeto identificado como Grupo B
+- [x] `middlewares/optionalAuth.js` criado
+- [x] `getDestinationDetails` adicionado ao service
+- [x] `getFeedDestinations` adicionado ao service
+- [x] Detalhe do destino implementado no controller
+- [x] Rota `GET /api/destinations/:id` criada com `optionalAuth`
+- [x] Dados do autor incluídos no detalhe sem expor a senha
+- [x] Campo `views` utilizado para contagem de visualizações
+- [x] Visualizações incrementadas ao acessar o detalhe
+- [x] `isOwner` retornado pela API
+- [x] `getFeed` adicionado ao `userController.js`
+- [x] Rota `GET /api/feed` criada e protegida por autenticação
+- [x] Feed paginado utilizando `page` e `limit`
+- [x] Detalhe sem token testado com sucesso
+- [x] Detalhe com token do dono testado com sucesso
+- [x] Detalhe de destino inexistente retorna 404
+- [x] Feed sem token retorna 401
+- [x] Feed com `page=1&limit=1` testado
+- [x] Feed com `page=2&limit=1` testado
+
+> Itens de streaming, Range e status 206 não se aplicam ao TravelBuddy por ser um projeto do Grupo B.
+
+## Parte B — Frontend: Feed e Detalhe com Dados Reais
+
+- [x] `getDestinationImageUrl()` adicionado em `utils/media.js`
+- [x] Classes de card adicionadas e adaptadas para imagens
+- [x] `getDestinationById()` criado no `userService.js`
+- [x] `getFeed()` criado no `userService.js`
+- [x] Componente reutilizável `DestinationCard.vue` criado
+- [x] Feed Geral exibindo destinos reais
+- [x] Feed exibido em grade
+- [x] Paginação com botão `Carregar mais` funcionando
+- [x] Tela de Detalhe exibindo dados reais do destino
+- [x] Imagem do destino exibida em resolução real no detalhe
+- [x] `isOwner` recebido da API e armazenado no estado da tela
+- [x] Navegação do card para o detalhe funcionando sem recarregar a página
+- [x] Recarregamento da tela de detalhe incrementa `views`
+- [x] Destino inexistente exibe mensagem de erro sem quebrar a tela
+
+## Evidências da Aula 08
+
+- [x] `feed-real.jpg`
+- [x] `detalhe-real.jpg`
+- [x] Print do curl do detalhe sem token
+- [x] Print do curl do detalhe com token do dono
+- [x] Print do curl do detalhe de destino inexistente
+- [x] Print do curl do feed sem token
+- [x] Print do curl do feed `page=1&limit=1`
+- [x] Print do curl do feed `page=2&limit=1`
+
+> `range-206.jpg` não se aplica ao TravelBuddy por ser um projeto do Grupo B.
+
+## Documentação
+
+- [x] Evidências da Aula 08 salvas em `01 - Docs/atividade08`
+- [x] `checklists.md` atualizado para a Aula 08

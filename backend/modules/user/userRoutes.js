@@ -46,6 +46,12 @@ router.put(
 );
 
 router.get(
+  '/feed',
+  isAuthenticated,
+  asyncHandler(userController.getFeed)
+);
+
+router.get(
   '/profile/:username',
   asyncHandler(userController.getPublicProfile)
 );

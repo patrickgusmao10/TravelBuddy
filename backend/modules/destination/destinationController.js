@@ -28,6 +28,21 @@ async function uploadDestination(req, res) {
   );
 }
 
+async function getDestinationDetails(req, res) {
+  const destinationId = req.params.id;
+  const currentUserId = req.user ? req.user.id : null;
+
+  const destination = await destinationService.getDestinationDetails(
+    destinationId,
+    currentUserId
+  );
+
+  const isOwner = currentUserId === destination.userId;
+
+  return success(res, { ...destination.toJSON(), isOwner });
+}
+
 module.exports = {
-  uploadDestination
+  uploadDestination,
+  getDestinationDetails
 };

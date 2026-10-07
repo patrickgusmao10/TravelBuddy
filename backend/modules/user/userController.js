@@ -1,4 +1,5 @@
 const userService = require('./userService');
+const destinationService = require('../destination/destinationService');
 const { generateToken } = require('../../config/jwt');
 const { success } = require('../../middlewares/apiResponse');
 
@@ -72,4 +73,16 @@ exports.updateProfile = async (req, res) => {
   );
 
   return success(res, updatedUser, 'Perfil atualizado com sucesso!');
+};
+
+exports.getFeed = async (req, res) => {
+  const page = parseInt(req.query.page, 10) || 1;
+  const limit = parseInt(req.query.limit, 10) || 12;
+
+  const destinations = await destinationService.getFeedDestinations(
+    page,
+    limit
+  );
+
+  return success(res, destinations);
 };
