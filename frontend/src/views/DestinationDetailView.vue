@@ -3,7 +3,7 @@
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getDestinationById } from '../services/userService'
-import { getDestinationImageUrl } from '../utils/media'
+import { getDestinationImageUrl, getProfilePictureUrl } from '../utils/media'
 
 const route = useRoute()
 
@@ -21,7 +21,6 @@ async function loadDestination(id) {
   try {
     const response = await getDestinationById(id)
 
-    // Ignora respostas de uma navegação anterior.
     if (String(route.params.id) !== String(id)) return
 
     destination.value = response.data
@@ -33,7 +32,6 @@ async function loadDestination(id) {
       error.response?.data?.message ||
       'Destino não encontrado.'
   } finally {
-    // Apenas a requisição do destino atual encerra o carregamento.
     if (String(route.params.id) === String(id)) {
       isLoading.value = false
     }
@@ -76,9 +74,45 @@ watch(() => route.params.id, (newId) => {
             {{ destination.title }}
           </h1>
 
-          <p class="text-muted">
-            @{{ destination.User.username }}
-          </p>
+          <div class="d-flex align-items-center mb-3">
+            <router-link
+              :to="{
+                name: 'public-profile',
+                params: { username: destination.User.username }
+              }"
+              class="d-flex align-items-center text-decoration-none text-dark"
+            >
+              <img
+                :src="getProfilePictureUrl(destination.User.profilePicture)"
+                :alt="destination.User.username"
+                class="rounded-circle me-2"
+                width="40"
+                height="40"
+                style="object-fit: cover;"
+              />
+
+              <div>
+                <h6 class="mb-0">
+                  {{ destination.User.fullName || destination.User.username }}
+                </h6>
+                <small class="text-muted">
+                  @{{ destination.User.username }}
+                </small>
+              </div>
+            </router-link>
+          </div>
+
+          <div v-if="isOwner" class="mb-3">
+            <router-link
+              :to="{
+                name: 'destination-edit',
+                params: { id: destination.id }
+              }"
+              class="btn btn-outline-secondary rounded-pill"
+            >
+              <i class="bi bi-pencil"></i> Editar Destino
+            </router-link>
+          </div>
 
           <p>
             <i class="bi bi-eye"></i>
@@ -96,13 +130,9 @@ watch(() => route.params.id, (newId) => {
 
 <style scoped>
 .destination-detail {
-  max-width: 750px;
+  max-width: 850px;
+  width: 100%;
   margin: 0 auto;
-}
-
-.destination-content h1 {
-  font-size: 2rem;
-  margin-bottom: 8px;
 }
 
 .destination-card {
@@ -114,12 +144,29 @@ watch(() => route.params.id, (newId) => {
 
 .destination-image {
   width: 100%;
+  height: auto;
   max-height: 500px;
   object-fit: contain;
   display: block;
+  margin: 0 auto;
 }
 
 .destination-content {
   padding: 24px;
+}
+
+.destination-content h1 {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+@media (max-width: 768px) {
+  .destination-image {
+    height: 280px;
+  }
+
+  .destination-content {
+    padding: 16px;
+  }
 }
 </style>

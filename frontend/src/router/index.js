@@ -1,3 +1,4 @@
+
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 
@@ -37,6 +38,29 @@ const routes = [
     path: '/destinos/:id',
     name: 'destination-detail',
     component: () => import('../views/DestinationDetailView.vue')
+  },
+
+  // Aula 09 - Perfil público
+  {
+    path: '/profile/:username',
+    name: 'public-profile',
+    component: () => import('../views/profile/PublicProfileView.vue')
+  },
+
+  // Aula 09 - Meus destinos
+  {
+    path: '/destinos/meus',
+    name: 'my-destinations',
+    component: () => import('../views/MyDestinationsView.vue'),
+    meta: { requiresAuth: true }
+  },
+
+  // Aula 09 - Editar destino
+  {
+    path: '/destinos/:id/edit',
+    name: 'destination-edit',
+    component: () => import('../views/EditDestinationView.vue'),
+    meta: { requiresAuth: true }
   },
 
   {
@@ -144,7 +168,11 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes
+  routes,
+
+  scrollBehavior(to, from, savedPosition) {
+    return { top: 0, left: 0 }
+  }
 })
 
 router.beforeEach((to) => {

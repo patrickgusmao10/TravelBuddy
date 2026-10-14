@@ -1,3 +1,4 @@
+
 import api from './api'
 
 export function getMyProfile() {
@@ -18,4 +19,8 @@ export function getFeed(page = 1, limit = 12) {
   return api.get('/feed', {
     params: { page, limit },
   })
+}
+
+export function getPublicProfile(username) {
+  return api.get(`/profile/${encodeURIComponent(username)}`)
 }

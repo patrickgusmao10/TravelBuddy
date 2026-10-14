@@ -1,4 +1,6 @@
+
 const User = require('./userModel');
+const Destination = require('../destination/destinationModel');
 const bcrypt = require('bcryptjs');
 const { Op } = require('sequelize');
 const fs = require('fs');
@@ -41,7 +43,12 @@ async function getPublicProfile(username) {
       'followersCount',
       'followingCount',
       'destinationsCount'
-    ]
+    ],
+    include: [{
+      model: Destination,
+      attributes: ['id', 'title', 'imagePath', 'views']
+    }],
+    order: [[Destination, 'createdAt', 'DESC']]
   });
 
   if (!user) {

@@ -1,3 +1,4 @@
+
 const userService = require('./userService');
 const destinationService = require('../destination/destinationService');
 const { generateToken } = require('../../config/jwt');
@@ -24,7 +25,9 @@ exports.register = async (req, res) => {
 exports.getPublicProfile = async (req, res) => {
   const user = await userService.getPublicProfile(req.params.username);
 
-  return success(res, user);
+  const isOwner = !!(req.user && req.user.id === user.id);
+
+  return success(res, { ...user.toJSON(), isOwner });
 };
 
 exports.login = async (req, res) => {

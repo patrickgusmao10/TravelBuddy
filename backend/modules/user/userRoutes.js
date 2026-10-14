@@ -1,3 +1,4 @@
+
 const express = require('express');
 
 const router = express.Router();
@@ -11,6 +12,7 @@ const {
 } = require('./userValidator');
 
 const { isAuthenticated } = require('../../middlewares/auth');
+const { optionalAuth } = require('../../middlewares/optionalAuth');
 const profileMulter = require('../../middlewares/profileMulter');
 const asyncHandler = require('../../middlewares/asyncHandler');
 
@@ -53,6 +55,7 @@ router.get(
 
 router.get(
   '/profile/:username',
+  optionalAuth,
   asyncHandler(userController.getPublicProfile)
 );
 

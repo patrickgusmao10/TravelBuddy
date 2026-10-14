@@ -1,9 +1,37 @@
+
+const fs = require('fs');
 const multer = require('multer');
 const { error } = require('./apiResponse');
+
+// Remove arquivos enviados pelo Multer quando a requisição falha.
+function removeUploadedFiles(req) {
+  const uploadedFiles = [];
+
+  // .single() popula req.file
+  if (req.file) {
+    uploadedFiles.push(req.file);
+  }
+
+  // .fields() popula req.files como um objeto de arrays
+  if (req.files) {
+    uploadedFiles.push(...Object.values(req.files).flat());
+  }
+
+  uploadedFiles.forEach((file) => {
+    fs.unlink(file.path, (err) => {
+      if (err) {
+        console.error('Erro ao limpar arquivo órfão:', err);
+      }
+    });
+  });
+}
 
 module.exports = (err, req, res, next) => {
 
   console.error(err);
+
+  // Limpa arquivos gravados pelo Multer antes da falha.
+  removeUploadedFiles(req);
 
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {

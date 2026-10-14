@@ -1,44 +1,74 @@
-<script setup>
-import { getDestinationImageUrl } from '../../utils/media'
 
-defineProps({
+<script setup>
+import { computed } from 'vue'
+import { getDestinationImageUrl, getProfilePictureUrl } from '../../utils/media'
+
+const props = defineProps({
   destination: {
     type: Object,
     required: true,
   },
+  author: {
+    type: Object,
+    default: null,
+  },
 })
+
+const displayAuthor = computed(() => props.author ?? props.destination.User)
 </script>
 
 <template>
-  <RouterLink
-    :to="`/destinos/${destination.id}`"
-    class="destination-link"
-  >
-    <div class="destination-card">
+  <div class="destination-card">
+    <RouterLink
+      :to="{ name: 'destination-detail', params: { id: destination.id } }"
+      class="d-block"
+    >
       <img
         :src="getDestinationImageUrl(destination.imagePath)"
         :alt="destination.title"
         class="destination-image"
       />
+    </RouterLink>
 
-      <div class="p-3">
-        <h6 class="text-truncate mb-1">
+    <div class="p-3">
+      <h6 class="text-truncate mb-1">
+        <RouterLink
+          :to="{ name: 'destination-detail', params: { id: destination.id } }"
+          class="text-decoration-none text-dark"
+        >
           {{ destination.title }}
-        </h6>
+        </RouterLink>
+      </h6>
 
-        <div class="d-flex justify-content-between align-items-center">
-          <span class="text-muted small">
-            @{{ destination.User.username }}
-          </span>
+      <div class="d-flex justify-content-between align-items-center gap-2">
+        <RouterLink
+          v-if="displayAuthor"
+          :to="{ name: 'public-profile', params: { username: displayAuthor.username } }"
+          class="d-flex align-items-center text-decoration-none overflow-hidden"
+        >
+          <img
+            :src="getProfilePictureUrl(displayAuthor.profilePicture)"
+            :alt="displayAuthor.username"
+            class="rounded-circle me-2"
+            width="24"
+            height="24"
+            style="object-fit: cover;"
+          />
 
-          <span class="text-muted small">
-            <i class="bi bi-eye"></i>
-            {{ destination.views }}
+          <span class="text-muted small text-truncate">
+            @{{ displayAuthor.username }}
           </span>
-        </div>
+        </RouterLink>
+
+        <span class="text-muted small text-nowrap ms-auto">
+          <i class="bi bi-eye"></i>
+          {{ destination.views }}
+        </span>
       </div>
+
+      <slot name="actions" />
     </div>
-  </RouterLink>
+  </div>
 </template>
 
 <style scoped>
@@ -60,12 +90,6 @@ defineProps({
   width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
-  display: block;
-}
-
-.destination-link {
-  text-decoration: none;
-  color: inherit;
   display: block;
 }
 </style>

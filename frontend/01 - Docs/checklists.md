@@ -569,3 +569,107 @@
 
 - [x] Evidências da Aula 08 salvas em `01 - Docs/atividade08`
 - [x] `checklists.md` atualizado para a Aula 08
+
+
+# Checklist - Aula 09
+
+## Parte A — Backend: CRUD de Destinos, Perfil Público e Limpeza de Arquivos Órfãos
+
+### Checklist das tarefas
+
+- [x] `reload()` adicionado ao detalhe do destino
+- [x] Duas chamadas consecutivas ao detalhe retornam contagens de visualizações atualizadas
+- [x] Verificação de erro 404 antes do erro 403 nas funções de autorização
+- [x] Ordem banco de dados → disco respeitada na edição e exclusão
+- [x] Contador `destinationsCount` decrementado na exclusão
+- [x] Quatro handlers implementados no controller: listar meus destinos, buscar para edição, atualizar e excluir
+- [x] Quatro rotas implementadas, com Multer antes do validador no PUT
+- [x] `getPublicProfile` com `include` e `order` no nível superior
+- [x] `isOwner` retornado no perfil público
+- [x] Rota `/profile/:username` com `optionalAuth`, após `/profile/me`
+- [x] `errorHandler.js` com limpeza de arquivos órfãos e registrado como último middleware
+
+### Checklist dos testes
+
+- [x] GET Meus Destinos: sem token retorna 401; usuário A recebe lista ordenada; usuário B recebe lista vazia
+- [x] GET destino para edição: sem token 401; outro usuário 403; destino inexistente 404; proprietário 200 sem alterar visualizações
+- [x] PUT somente texto: retorna 200, mantém imagem e quantidade de arquivos
+- [x] PUT com nova imagem: retorna 200, substitui o arquivo e mantém a contagem de arquivos
+- [x] Limpeza de arquivos órfãos: PUT não autorizado retorna 403 sem aumentar a quantidade de arquivos
+- [x] Limpeza de arquivos órfãos: PUT com título vazio retorna 400 sem aumentar a quantidade de arquivos
+- [x] DELETE do proprietário retorna 200 e remove a imagem do disco
+- [x] DELETE: outro usuário recebe 403; após exclusão retorna 404; contador decrementado
+- [x] Perfil público: proprietário, outro usuário, visitante e usuário inexistente validados
+
+## Parte B — Frontend: Perfil Público, Meus Destinos e Edição
+
+### Checklist das tarefas
+
+- [x] `composables/useClickOutside.js` criado
+- [x] `components/base/BaseModal.vue` criado
+- [x] Funções `getMyDestinations()`, `getDestinationForEdit()`, `updateDestination()` e `deleteDestination()` implementadas
+- [x] `getPublicProfile()` implementada
+- [x] `DestinationCard.vue` refatorado com autor clicável, opcional e slot de ações
+- [x] Feed Geral da Aula 08 continua funcionando
+- [x] Menu suspenso do avatar implementado na Navbar
+- [x] Perfil Público com comportamento para proprietário, usuário autenticado e visitante
+- [x] Tela Meus Destinos com modal de confirmação e remoção local
+- [x] Tela Editar Destino com atualização de texto e troca opcional da imagem
+- [x] Autor clicável e botão Editar condicional na tela de detalhe
+- [x] Link Ver em Meus Destinos adicionado à mensagem de sucesso do upload
+
+### Checklist dos testes
+
+- [x] Menu do avatar abre e fecha ao clicar fora, pressionar Esc ou selecionar um item
+- [x] Perfil próprio exibe botão Editar Perfil e destinos publicados
+- [x] Perfil de outro usuário exibe botão Seguir e permite navegar pelo autor
+- [x] Perfil público funciona em janela anônima, sem botões de edição ou seguir
+- [x] Usuário inexistente exibe a mensagem Usuário não encontrado
+- [x] Meus Destinos exibe os cards com Editar e Excluir
+- [x] Conta sem destinos exibe estado vazio e link para upload
+- [x] Modal de exclusão abre corretamente e fecha por Cancelar, X, clique fora e Esc
+- [x] Exclusão remove o destino da listagem sem recarregar a página
+- [x] Requisição DELETE retorna status 200
+- [x] Formulário de edição carrega título, descrição e imagem atual
+- [x] Atualização somente de texto mantém a imagem original
+- [x] Atualização com nova imagem funciona corretamente
+- [x] Título obrigatório validado no formulário
+- [x] Requisição PUT utiliza `multipart/form-data` com `boundary`
+- [x] Edição de destino pertencente a outro usuário retorna 403
+- [x] Edição de destino inexistente retorna 404
+- [x] Rota protegida redireciona ao login e retorna após autenticação
+- [x] Botão Editar Destino aparece no detalhe do proprietário
+- [x] Upload apresenta o link Ver em Meus Destinos
+- [x] Feed, detalhe, upload, perfil, login e logout continuam funcionando
+- [x] Console do navegador sem erros vermelhos durante os testes
+- [x] Ausência de nova requisição quando o título é inválido
+- [x] Remoção física da imagem antiga e atualização do contador após exclusão
+
+## Evidências da Aula 09
+
+### Prints de interface exigidos pelo enunciado
+
+- [x] `atividade09/menu-avatar.jpg`
+- [x] `atividade09/perfil-publico.jpg`
+- [x] `atividade09/modal-exclusao.jpg`
+- [x] `atividade09/editar.jpg`
+
+### Evidências do backend
+
+- [x] Prints do Teste 04 — substituição de imagem, contagem de arquivos 4 → 4
+- [x] Prints do Teste 05 — exclusão de destino, contagem de arquivos 4 → 3
+- [x] Prints do Teste 06 — tentativa de edição não autorizada, erro 403, contagem 3 → 3
+- [x] Prints dos demais cURLs exigidos na Parte A, Etapa 6
+- [x] Prints das contagens de arquivos antes e depois dos testes 4, 5 e 6
+- [x] Prints organizados em `01 - Docs/atividade09`
+
+## Documentação e Entrega
+
+- [x] `checklists.md` atualizado com a Aula 09
+- [x] Cinco respostas conceituais redigidas conforme o enunciado
+- [x] `respostas.md` criado em `01 - Docs/atividade09`
+- [x] Evidências organizadas em `01 - Docs/atividade09`
+- [x] ZIP do backend gerado sem `node_modules`
+- [x] ZIP do frontend gerado sem `node_modules`
+
+> Projeto TravelBuddy — Grupo B: cada destino possui uma única imagem. Os requisitos específicos de vídeo, áudio, streaming e capa separada não se aplicam.

@@ -1,3 +1,4 @@
+
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import { uploadDestination } from '../services/destinationService'
@@ -199,6 +200,9 @@ async function handleSubmit() {
 
       <p v-if="successMessage" class="text-success small">
         {{ successMessage }}
+        <router-link :to="{ name: 'my-destinations' }">
+          Ver em Meus Destinos
+        </router-link>
       </p>
 
       <div class="d-grid gap-2">
