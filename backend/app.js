@@ -1,3 +1,4 @@
+
 var express = require('express');
 var path = require('path');
 var logger = require('morgan');
@@ -9,6 +10,8 @@ var searchRoutes = require('./modules/search/searchRoutes');
 var userRoutes = require('./modules/user/userRoutes');
 var errorHandler = require('./middlewares/errorHandler');
 var sequelize = require('./config/database');
+var likeRoutes = require('./modules/like/likeRoutes');
+var commentRoutes = require('./modules/comment/commentRoutes');
 
 require('./config/associations');
 
@@ -28,6 +31,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 app.use('/api', indexRouter);
 app.use('/api', searchRoutes);
 app.use('/api', userRoutes);
+app.use('/api', likeRoutes);
+app.use('/api', commentRoutes);
 
 app.use((req, res) => {
   res.status(404).json({

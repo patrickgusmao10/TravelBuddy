@@ -40,7 +40,7 @@ async function getDestinationDetails(req, res) {
 
   const isOwner = currentUserId === destination.userId;
 
-  return success(res, { ...destination.toJSON(), isOwner });
+  return success(res, { ...destination, isOwner });
 }
 
 async function getMyDestinations(req, res) {

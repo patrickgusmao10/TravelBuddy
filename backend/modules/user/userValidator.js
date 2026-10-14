@@ -1,3 +1,4 @@
+
 const { body, validationResult } = require('express-validator');
 const { VALIDATION } = require('../../config/constants');
 
@@ -49,9 +50,9 @@ exports.registerValidator = [
     }),
 
   body('fullName')
+    .trim()
     .notEmpty()
-    .withMessage('O nome completo é obrigatório.')
-    .trim(),
+    .withMessage('O nome completo é obrigatório.'),
 
   validate
 ];
@@ -72,9 +73,9 @@ exports.loginValidator = [
 
 exports.profileUpdateValidator = [
   body('fullName')
+    .trim()
     .notEmpty()
-    .withMessage('O nome completo não pode ser vazio.')
-    .trim(),
+    .withMessage('O nome completo não pode ser vazio.'),
 
   body('bio')
     .isLength({ max: VALIDATION.BIO_MAX })

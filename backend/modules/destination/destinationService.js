@@ -1,6 +1,9 @@
 
 const Destination = require('./destinationModel');
 const User = require('../user/userModel');
+const Like = require('../like/likeModel');
+const Comment = require('../comment/commentModel');
+const sequelize = require('../../config/database');
 const fs = require('fs');
 const path = require('path');
 
@@ -34,10 +37,22 @@ async function getDestinationDetails(destinationId, currentUserId = null) {
   }
 
   await destination.increment('views');
-
   await destination.reload();
 
-  return destination;
+  let isLiked = false;
+
+  if (currentUserId) {
+    const like = await Like.findOne({
+      where: {
+        userId: currentUserId,
+        destinationId: destination.id
+      }
+    });
+
+    isLiked = !!like;
+  }
+
+  return { ...destination.toJSON(), isLiked };
 }
 
 async function getFeedDestinations(page = 1, limit = 12) {
@@ -125,10 +140,23 @@ async function deleteDestination(destinationId, requestingUserId, isAdmin = fals
     throw error;
   }
 
-  await destination.destroy();
+  await sequelize.transaction(async (t) => {
+    await Like.destroy({
+      where: { destinationId: destination.id },
+      transaction: t
+    });
 
-  await User.decrement('destinationsCount', {
-    where: { id: destination.userId }
+    await Comment.destroy({
+      where: { destinationId: destination.id },
+      transaction: t
+    });
+
+    await destination.destroy({ transaction: t });
+
+    await User.decrement('destinationsCount', {
+      where: { id: destination.userId },
+      transaction: t
+    });
   });
 
   const imageFilePath = path.join(

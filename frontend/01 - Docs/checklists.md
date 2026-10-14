@@ -673,3 +673,89 @@
 - [x] ZIP do frontend gerado sem `node_modules`
 
 > Projeto TravelBuddy — Grupo B: cada destino possui uma única imagem. Os requisitos específicos de vídeo, áudio, streaming e capa separada não se aplicam.
+
+# Checklist - Aula 10
+
+## Parte A — Backend: Curtidas e Comentários
+
+### Checklist das tarefas
+
+- [x] Projeto identificado como Grupo B — TravelBuddy
+- [x] Models `Like` e `Comment` criados
+- [x] Associações entre `User`, `Destination`, `Like` e `Comment` configuradas nos dois sentidos
+- [x] Campos `likesCount` e `commentsCount` implementados
+- [x] Constante `COMMENT_MAX` configurada
+- [x] Índice UNIQUE composto por `userId` e `destinationId` configurado
+- [x] Tabelas e colunas conferidas no banco de dados
+- [x] `likeService.js` e `likeController.js` implementados
+- [x] Módulo de curtidas com três rotas configuradas e registradas
+- [x] Operações de curtida protegidas por autenticação
+- [x] `toggleLike()` implementado com transação
+- [x] Incremento e decremento de `likesCount` implementados
+- [x] Consulta do estado de curtida implementada
+- [x] Listagem de destinos curtidos implementada
+- [x] `commentService.js` e `commentController.js` implementados
+- [x] Módulo de comentários com duas rotas configuradas e registradas
+- [x] Criação e listagem de comentários implementadas
+- [x] Validação de comentários com limite de caracteres e tratamento de espaços
+- [x] Atualização transacional de `commentsCount` implementada
+- [x] Comentário criado retornado com os dados do autor
+- [x] Estado `isLiked` e contadores integrados ao detalhe do destino
+- [x] Exclusão de destino com limpeza transacional de curtidas e comentários relacionados
+- [x] Contadores integrados ao perfil público
+- [x] Correção de `.trim()` nos validadores dos campos obrigatórios
+
+### Checklist dos testes
+
+- [x] Curtir destino testado com sucesso
+- [x] Descurtir destino testado com sucesso
+- [x] Contador de curtidas validado
+- [x] Curtida sem autenticação e destino inexistente testados
+- [x] Consulta do estado de curtida validada
+- [x] Estado `isLiked` validado no detalhe do destino
+- [x] Restrição UNIQUE validada diretamente no MySQL
+- [x] Listagem de destinos curtidos testada
+- [x] Criação de comentário testada
+- [x] Validação de comentários inválidos testada
+- [x] Listagem pública de comentários testada
+- [x] Ordenação dos comentários validada
+- [x] Contador de comentários validado
+- [x] Exclusão de destino com registros relacionados validada
+- [x] Testes `curl` do backend executados
+- [x] Evidências dos testes `curl` salvas
+- [x] Validação de campos obrigatórios com espaços realizada
+- [x] Testes de regressão das funcionalidades anteriores realizados
+
+## Parte B — Frontend: Interações de Curtidas e Comentários
+
+### Checklist das tarefas
+
+- [x] `services/likeService.js` criado
+- [x] `services/commentService.js` criado
+- [x] `utils/format.js` implementado
+- [x] CSS necessário para exibição dos comentários configurado
+- [x] Componente `LikeButton.vue` implementado
+- [x] Atualização otimista de curtidas implementada
+- [x] Rollback da curtida em caso de falha implementado
+- [x] Bloqueio de cliques simultâneos durante a requisição implementado
+- [x] Tratamento de erro de conexão implementado
+- [x] Redirecionamento de visitante para login com retorno ao destino implementado
+- [x] Componente `CommentSection.vue` implementado
+- [x] Estados de carregamento, erro e lista vazia implementados
+- [x] Formulário de comentários integrado à API
+- [x] Validação de comentários no formulário implementada
+- [x] Listagem de comentários integrada à API
+- [x] Novo comentário inserido no topo sem recarregar a lista
+- [x] Comentários renderizados com interpolação Vue, sem `v-html`
+- [x] Quebras de linha preservadas com `white-space: pre-wrap`
+- [x] Contador de comentários integrado
+- [x] `DestinationDetailView.vue` atualizado com curtidas e comentários
+- [x] `DestinationCard.vue` atualizado com contadores
+- [x] Contadores exibidos no Feed Geral
+- [x] Contadores exibidos em Meus Destinos
+- [x] Contadores integrados aos cards do perfil
+- [x] `FavoritesView.vue` integrada à API de destinos curtidos
+- [x] Rota `/favoritos` reutilizada e protegida por autenticação
+- [x] Tela de Favoritos acessível pelo menu lateral
+- [x] Estrutura de resposta da API ajustada ao interceptor Axios existente
+- [x]

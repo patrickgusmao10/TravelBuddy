@@ -1,3 +1,4 @@
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../../config/database');
 
@@ -21,6 +22,14 @@ const Destination = sequelize.define('Destination',
       allowNull: false
     },
     views: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    likesCount: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    },
+    commentsCount: {
       type: DataTypes.INTEGER,
       defaultValue: 0
     },

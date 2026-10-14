@@ -66,6 +66,18 @@ const displayAuthor = computed(() => props.author ?? props.destination.User)
         </span>
       </div>
 
+      <div class="d-flex align-items-center gap-3 mt-2">
+        <span class="text-muted small">
+          <i class="bi bi-heart"></i>
+          {{ destination.likesCount ?? 0 }}
+        </span>
+
+        <span class="text-muted small">
+          <i class="bi bi-chat"></i>
+          {{ destination.commentsCount ?? 0 }}
+        </span>
+      </div>
+
       <slot name="actions" />
     </div>
   </div>

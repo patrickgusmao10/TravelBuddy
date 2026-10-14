@@ -4,6 +4,8 @@ import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getDestinationById } from '../services/userService'
 import { getDestinationImageUrl, getProfilePictureUrl } from '../utils/media'
+import LikeButton from '../components/destination/LikeButton.vue'
+import CommentSection from '../components/destination/CommentSection.vue'
 
 const route = useRoute()
 
@@ -122,6 +124,18 @@ watch(() => route.params.id, (newId) => {
           <p>
             {{ destination.description }}
           </p>
+
+          <LikeButton
+            :key="destination.id"
+            :destination-id="Number(destination.id)"
+            :initial-liked="destination.isLiked"
+            :initial-count="destination.likesCount"
+          />
+
+          <CommentSection
+            :key="destination.id"
+            :destination-id="Number(destination.id)"
+          />
         </div>
       </div>
     </div>

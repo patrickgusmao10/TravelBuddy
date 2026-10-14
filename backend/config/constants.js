@@ -1,3 +1,4 @@
+
 module.exports = {
   VALIDATION: {
     USERNAME_MIN: 3,
@@ -5,6 +6,7 @@ module.exports = {
     PASSWORD_MIN: 6,
     BIO_MAX: 255,
     DESCRIPTION_MAX: 500,
-    TITLE_MAX: 100
+    TITLE_MAX: 100,
+    COMMENT_MAX: 500
   }
 };

@@ -46,7 +46,14 @@ async function getPublicProfile(username) {
     ],
     include: [{
       model: Destination,
-      attributes: ['id', 'title', 'imagePath', 'views']
+      attributes: [
+        'id',
+        'title',
+        'imagePath',
+        'views',
+        'likesCount',
+        'commentsCount'
+      ]
     }],
     order: [[Destination, 'createdAt', 'DESC']]
   });

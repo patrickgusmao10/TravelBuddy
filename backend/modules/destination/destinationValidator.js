@@ -1,3 +1,4 @@
+
 const { body, validationResult } = require('express-validator');
 const { VALIDATION } = require('../../config/constants');
 
@@ -18,13 +19,13 @@ const validate = (req, res, next) => {
 
 exports.uploadValidator = [
   body('title')
+    .trim()
     .notEmpty()
     .withMessage('O título é obrigatório.')
     .isLength({ max: VALIDATION.TITLE_MAX })
     .withMessage(
       `O título deve ter no máximo ${VALIDATION.TITLE_MAX} caracteres.`
-    )
-    .trim(),
+    ),
 
   body('description')
     .isLength({ max: VALIDATION.DESCRIPTION_MAX })
