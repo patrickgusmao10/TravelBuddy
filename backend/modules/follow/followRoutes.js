@@ -16,4 +16,7 @@ router.get('/users/:userId/followers',
 router.get('/users/:userId/following',
     asyncHandler(followController.getFollowing));
 
+router.get('/following-destinations', isAuthenticated,
+    asyncHandler(followController.getFollowingDestinations));
+
 module.exports = router;

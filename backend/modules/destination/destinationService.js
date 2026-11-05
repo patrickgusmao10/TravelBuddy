@@ -1,4 +1,3 @@
-
 const Destination = require('./destinationModel');
 const User = require('../user/userModel');
 const Like = require('../like/likeModel');
@@ -6,6 +5,8 @@ const Comment = require('../comment/commentModel');
 const sequelize = require('../../config/database');
 const fs = require('fs');
 const path = require('path');
+const { Op } = require('sequelize');
+const Follow = require('../follow/followModel');
 
 async function createDestination({ title, description, imagePath, userId }) {
   const destination = await Destination.create({
@@ -69,6 +70,30 @@ async function getFeedDestinations(page = 1, limit = 12) {
   });
 
   return destinations;
+}
+
+async function getFollowingDestinations(userId, page = 1, limit = 12) {
+  const offset = (page - 1) * limit;
+
+  const followedIds = (await Follow.findAll({
+    where: { followerId: userId },
+    attributes: ['followingId']
+  })).map((follow) => follow.followingId);
+
+  if (followedIds.length === 0) {
+    return [];
+  }
+
+  return await Destination.findAll({
+    where: { userId: { [Op.in]: followedIds } },
+    include: [{
+      model: User,
+      attributes: ['id', 'username', 'fullName', 'profilePicture']
+    }],
+    order: [['createdAt', 'DESC']],
+    offset,
+    limit
+  });
 }
 
 async function getDestinationsByUser(userId) {
@@ -174,6 +199,7 @@ module.exports = {
   createDestination,
   getDestinationDetails,
   getFeedDestinations,
+  getFollowingDestinations,
   getDestinationsByUser,
   getDestinationForEdit,
   updateDestination,
