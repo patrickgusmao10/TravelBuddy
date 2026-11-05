@@ -1,6 +1,6 @@
-
 const userService = require('./userService');
 const destinationService = require('../destination/destinationService');
+const followService = require('../follow/followService');
 const { generateToken } = require('../../config/jwt');
 const { success } = require('../../middlewares/apiResponse');
 
@@ -26,8 +26,11 @@ exports.getPublicProfile = async (req, res) => {
   const user = await userService.getPublicProfile(req.params.username);
 
   const isOwner = !!(req.user && req.user.id === user.id);
+  const isFollowing = req.user && !isOwner
+    ? await followService.getFollowStatus(req.user.id, user.id)
+    : false;
 
-  return success(res, { ...user.toJSON(), isOwner });
+  return success(res, { ...user.toJSON(), isOwner, isFollowing });
 };
 
 exports.login = async (req, res) => {
