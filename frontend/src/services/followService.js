@@ -12,6 +12,6 @@ export function getFollowing(userId) {
   return api.get(`/users/${userId}/following`)
 }
 
-export function getFollowingVideos(page = 1, limit = 12) {
+export function getFollowingDestinations(page = 1, limit = 12) {
   return api.get('/following-destinations', { params: { page, limit } })
 }
