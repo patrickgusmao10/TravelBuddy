@@ -1,14 +1,12 @@
-
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { getPublicProfile } from '../../services/userService'
 import { getProfilePictureUrl } from '../../utils/media'
-import { useAuth } from '../../composables/useAuth'
 import DestinationCard from '../../components/base/DestinationCard.vue'
+import FollowButton from '../../components/profile/FollowButton.vue'
 
 const route = useRoute()
-const { isAuthenticated } = useAuth()
 
 const profile = ref(null)
 const isLoading = ref(true)
@@ -97,19 +95,25 @@ watch(
               <small class="text-muted">Destinos</small>
             </div>
 
-            <div>
+            <router-link
+              :to="{ name: 'profile-followers', params: { username: profile.username } }"
+              class="text-decoration-none text-reset"
+            >
               <h5 class="mb-0 fw-bold">
                 {{ profile.followersCount ?? 0 }}
               </h5>
               <small class="text-muted">Seguidores</small>
-            </div>
+            </router-link>
 
-            <div>
+            <router-link
+              :to="{ name: 'profile-following', params: { username: profile.username } }"
+              class="text-decoration-none text-reset"
+            >
               <h5 class="mb-0 fw-bold">
                 {{ profile.followingCount ?? 0 }}
               </h5>
               <small class="text-muted">Seguindo</small>
-            </div>
+            </router-link>
           </div>
 
           <router-link
@@ -120,13 +124,12 @@ watch(
             Editar Perfil
           </router-link>
 
-          <button
-            v-else-if="isAuthenticated"
-            type="button"
-            class="btn btn-primary rounded-pill px-4"
-          >
-            Seguir
-          </button>
+          <FollowButton
+            v-else
+            :user-id="profile.id"
+            v-model:following="profile.isFollowing"
+            v-model:followers-count="profile.followersCount"
+          />
         </div>
 
         <h4 class="fw-bold mb-3">

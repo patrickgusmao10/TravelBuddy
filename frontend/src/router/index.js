@@ -1,4 +1,3 @@
-
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
 
@@ -45,6 +44,20 @@ const routes = [
     path: '/profile/:username',
     name: 'public-profile',
     component: () => import('../views/profile/PublicProfileView.vue')
+  },
+
+  {
+    path: '/profile/:username/followers',
+    name: 'profile-followers',
+    component: () => import('../views/profile/FollowListView.vue'),
+    props: { kind: 'followers' }
+  },
+
+  {
+    path: '/profile/:username/following',
+    name: 'profile-following',
+    component: () => import('../views/profile/FollowListView.vue'),
+    props: { kind: 'following' }
   },
 
   // Aula 09 - Meus destinos
