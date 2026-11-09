@@ -93,7 +93,10 @@ onMounted(() => {
         v-if="!destinations.length && !apiErrorMessage"
         class="text-center mt-4"
       >
-        Nenhum destino publicado pelos usuários que você segue.
+        <p>Nenhum destino publicado pelos usuários que você segue.</p>
+        <router-link :to="{ name: 'general-feed' }">
+          Explorar Feed Geral
+        </router-link>
       </div>
 
       <div v-if="hasMore" class="text-center mt-5">
