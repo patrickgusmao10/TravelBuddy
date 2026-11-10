@@ -10,18 +10,21 @@ const Follow = require('../follow/followModel');
 const { PAGINATION } = require('../../config/constants');
 
 async function createDestination({ title, description, imagePath, userId }) {
-  const destination = await Destination.create({
-    title,
-    description,
-    imagePath,
-    userId
-  });
+  return await sequelize.transaction(async (t) => {
+    const destination = await Destination.create({
+      title,
+      description,
+      imagePath,
+      userId
+    }, { transaction: t });
 
-  await User.increment('destinationsCount', {
-    where: { id: userId }
-  });
+    await User.increment('destinationsCount', {
+      where: { id: userId },
+      transaction: t
+    });
 
-  return destination;
+    return destination;
+  });
 }
 
 async function getDestinationDetails(destinationId, currentUserId = null) {
