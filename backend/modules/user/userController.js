@@ -3,6 +3,7 @@ const destinationService = require('../destination/destinationService');
 const followService = require('../follow/followService');
 const { generateToken } = require('../../config/jwt');
 const { success } = require('../../middlewares/apiResponse');
+const { parsePagination } = require('../../utils/pagination');
 
 exports.register = async (req, res) => {
   const { username, email, password, fullName } = req.body;
@@ -82,8 +83,7 @@ exports.updateProfile = async (req, res) => {
 };
 
 exports.getFeed = async (req, res) => {
-  const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 12;
+  const { page, limit } = parsePagination(req.query);
 
   const destinations = await destinationService.getFeedDestinations(
     page,

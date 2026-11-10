@@ -7,6 +7,7 @@ const fs = require('fs');
 const path = require('path');
 const { Op } = require('sequelize');
 const Follow = require('../follow/followModel');
+const { PAGINATION } = require('../../config/constants');
 
 async function createDestination({ title, description, imagePath, userId }) {
   const destination = await Destination.create({
@@ -56,7 +57,7 @@ async function getDestinationDetails(destinationId, currentUserId = null) {
   return { ...destination.toJSON(), isLiked };
 }
 
-async function getFeedDestinations(page = 1, limit = 12) {
+async function getFeedDestinations(page = PAGINATION.DEFAULT_PAGE, limit = PAGINATION.DEFAULT_LIMIT) {
   const offset = (page - 1) * limit;
 
   const destinations = await Destination.findAll({
@@ -72,7 +73,7 @@ async function getFeedDestinations(page = 1, limit = 12) {
   return destinations;
 }
 
-async function getFollowingDestinations(userId, page = 1, limit = 12) {
+async function getFollowingDestinations(userId, page = PAGINATION.DEFAULT_PAGE, limit = PAGINATION.DEFAULT_LIMIT) {
   const offset = (page - 1) * limit;
 
   const followedIds = (await Follow.findAll({

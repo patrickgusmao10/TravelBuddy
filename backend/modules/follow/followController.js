@@ -1,6 +1,7 @@
 const followService = require('./followService');
 const destinationService = require('../destination/destinationService');
 const { success } = require('../../middlewares/apiResponse');
+const { parsePagination } = require('../../utils/pagination');
 
 function parseUserId(rawValue) {
     const userId = Number(rawValue);
@@ -50,8 +51,7 @@ exports.getFollowing = async (req, res) => {
 
 exports.getFollowingDestinations = async (req, res) => {
     const userId = req.user.id;
-    const page = parseInt(req.query.page, 10) || 1;
-    const limit = parseInt(req.query.limit, 10) || 12;
+    const { page, limit } = parsePagination(req.query);
 
     const destinations = await destinationService.getFollowingDestinations(userId, page, limit);
 
