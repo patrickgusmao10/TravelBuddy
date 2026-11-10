@@ -759,3 +759,90 @@
 - [x] Tela de Favoritos acessível pelo menu lateral
 - [x] Estrutura de resposta da API ajustada ao interceptor Axios existente
 - [x]
+
+# Checklist - Aula 11
+
+## Parte A — Backend: Seguidores e Feed de Seguindo
+
+### Checklist das tarefas
+
+- [x] Model `Follow` criado com `followerId` e `followingId`
+- [x] Associações de seguidores e seguindo configuradas com aliases distintos
+- [x] Índice UNIQUE composto configurado para impedir seguir o mesmo usuário duas vezes
+- [x] Índice para consultas por usuário seguido configurado
+- [x] Validação de identificador de usuário implementada
+- [x] Regra que impede seguir a si mesmo implementada
+- [x] `followService.js` e `followController.js` implementados
+- [x] Rota para seguir/deixar de seguir implementada
+- [x] Rota para consultar o estado de acompanhamento implementada
+- [x] Rotas para listar seguidores e seguindo implementadas
+- [x] Rota autenticada do Feed de Seguindo implementada
+- [x] Feed de Seguindo paginado com `page` e `limit`
+- [x] Contadores de seguidores e seguindo integrados ao perfil público
+
+### Checklist dos testes
+
+- [x] Seguir usuário testado
+- [x] Deixar de seguir usuário testado
+- [x] Contadores atualizados após seguir e deixar de seguir
+- [x] Listagem de seguidores testada
+- [x] Listagem de usuários seguidos testada
+- [x] Feed de Seguindo testado com publicações de usuário seguido
+- [x] Feed de Seguindo vazio testado
+- [x] Paginação do Feed de Seguindo testada com `page=1&limit=1` e `page=2&limit=1`
+- [x] Restrição UNIQUE da tabela `follows` verificada no MySQL
+- [x] Testes de regressão das funcionalidades anteriores realizados
+
+## Parte B — Frontend: Seguir Usuários e Feed de Seguindo
+
+### Checklist das tarefas
+
+- [x] `followService.js` criado
+- [x] Componente `FollowButton.vue` implementado
+- [x] Atualização otimista do botão e contador implementada
+- [x] Rollback em caso de falha implementado
+- [x] Redirecionamento de visitante para login implementado
+- [x] Botão de seguir ocultado no próprio perfil
+- [x] Perfil público atualizado com contadores de seguidores e seguindo
+- [x] Navegação para listas de seguidores e seguindo implementada
+- [x] Tela de listagem de seguidores e seguindo implementada
+- [x] Tela `FollowingFeedView.vue` implementada
+- [x] Feed de Seguindo com paginação e botão `Carregar mais`
+- [x] Estado vazio do Feed de Seguindo com link para o Feed Geral
+- [x] Navegação para o Feed de Seguindo adicionada à Sidebar
+
+### Checklist dos testes
+
+- [x] Visitante não autenticado redirecionado para login ao tentar seguir
+- [x] Atualização otimista validada com throttling na aba Network
+- [x] Rollback validado com modo Offline
+- [x] Contador atualizado ao deixar de seguir
+- [x] Perfil próprio sem botão para seguir a si mesmo
+- [x] Navegação entre perfis validada
+- [x] Listas de seguidores e seguindo validadas
+- [x] Feed de Seguindo com e sem publicações validado
+- [x] Feed Geral, destinos, curtidas, comentários e favoritos continuam funcionando
+- [x] Upload, edição e exclusão de destinos continuam funcionando
+- [x] Console do navegador sem erros vermelhos durante os testes
+
+kkk
+
+## Evidências da Aula 11
+
+- [x] `atividade11/seguindo.jpg` — perfil com botão Seguindo e contador atualizado
+- [x] `atividade11/otimista.jpg` — atualização otimista com throttling no Network
+- [x] `atividade11/rollback.jpg` — mensagem de erro após teste Offline
+- [x] `atividade11/seguidores.jpg` — lista de seguidores com abas
+- [x] `atividade11/feed-seguindo.jpg` — feed filtrado
+- [x] `atividade11/follows.jpg` — tabela `follows`, índices e erro de duplicidade
+- [x] Prints `.jpg` dos testes `curl` da Parte A, Etapa 4
+
+## Documentação e Entrega
+
+- [x] `atividade11/respostas.md` criado com seis respostas da Seção 1
+- [x] `checklists.md` atualizado com a Aula 11
+- [x] Evidências organizadas em `01 - Docs/atividade11`
+- [x] ZIP do backend preparado sem `node_modules`
+- [x] ZIP do frontend preparado sem `node_modules`
+
+> Os itens de evidências e ZIPs foram pré-marcados para a entrega, mas ainda precisam ser produzidos e conferidos.
