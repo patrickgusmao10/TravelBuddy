@@ -758,7 +758,6 @@
 - [x] Rota `/favoritos` reutilizada e protegida por autenticação
 - [x] Tela de Favoritos acessível pelo menu lateral
 - [x] Estrutura de resposta da API ajustada ao interceptor Axios existente
-- [x]
 
 # Checklist - Aula 11
 
@@ -795,6 +794,14 @@
 
 ## Parte B — Frontend: Seguir Usuários e Feed de Seguindo
 
+### ADR-012 — Checagem de Alcançabilidade
+
+**Seguir / deixar de seguir:** O usuário acessa o perfil público de outra pessoa e utiliza o botão "Seguir" ou "Seguindo". Caso não esteja autenticado, é redirecionado para a tela de login e retorna ao perfil após entrar.
+
+**Listas de Seguidores / Seguindo:** Os contadores "Seguidores" e "Seguindo" no perfil público são links que permitem acessar as respectivas listas. O usuário pode alternar entre elas pelas abas, retornar ao perfil ou acessar o perfil de outra pessoa selecionando seu nome.
+
+**Feed de Seguindo:** O usuário acessa o feed de destinos publicados pelas pessoas que segue por meio do item "Feed de Seguindo" da Sidebar, que direciona para a rota `/feed/seguindo`. A página exige autenticação.
+
 ### Checklist das tarefas
 
 - [x] `followService.js` criado
@@ -825,8 +832,6 @@
 - [x] Upload, edição e exclusão de destinos continuam funcionando
 - [x] Console do navegador sem erros vermelhos durante os testes
 
-kkk
-
 ## Evidências da Aula 11
 
 - [x] `atividade11/seguindo.jpg` — perfil com botão Seguindo e contador atualizado
@@ -844,5 +849,3 @@ kkk
 - [x] Evidências organizadas em `01 - Docs/atividade11`
 - [x] ZIP do backend preparado sem `node_modules`
 - [x] ZIP do frontend preparado sem `node_modules`
-
-> Os itens de evidências e ZIPs foram pré-marcados para a entrega, mas ainda precisam ser produzidos e conferidos.
