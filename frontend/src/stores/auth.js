@@ -5,8 +5,7 @@ import {
   logout as logoutRequest
 } from '../services/authService'
 
-const TOKEN_KEY = 'travelbuddy_token'
-const USER_KEY = 'travelbuddy_user'
+import { TOKEN_KEY, USER_KEY } from '../config/constants'
 
 export const useAuthStore = defineStore('auth', () => {
   const token = ref(localStorage.getItem(TOKEN_KEY) || null)

@@ -1,10 +1,10 @@
-
 import api from './api'
 
 export function uploadDestination(formData, onUploadProgress) {
   return api.post('/destinations/upload', formData, {
     headers: { 'Content-Type': undefined },
     onUploadProgress,
+    silent: true,
   })
 }
 
@@ -19,6 +19,7 @@ export function getDestinationForEdit(id) {
 export function updateDestination(id, formData) {
   return api.put(`/destinations/${id}`, formData, {
     headers: { 'Content-Type': undefined },
+    silent: true,
   })
 }
 

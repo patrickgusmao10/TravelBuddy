@@ -1,22 +1,6 @@
-/*
- * Interceptores da API:
- *
- * 1. Antes de cada requisição, verificamos se existe um token salvo
- *    e, se existir, enviamos no cabeçalho Authorization.
- *
- * 2. Quando a requisição funciona, retornamos diretamente os dados da resposta.
- *
- * 3. Se a API responder 401, limpamos a sessão e redirecionamos para o login.
- *
- * 4. Para os demais erros da API, usamos a mensagem enviada pelo backend.
- *
- * 5. Se nenhuma resposta chegar, mostramos uma mensagem de falha de conexão.
- */
-
 import axios from 'axios'
-
-const TOKEN_KEY = 'travelbuddy_token'
-const USER_KEY = 'travelbuddy_user'
+import { TOKEN_KEY, USER_KEY, MESSAGES } from '../config/constants'
+import { useToast } from '../composables/useToast'
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -25,23 +9,32 @@ const api = axios.create({
   },
 })
 
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem(TOKEN_KEY)
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem(TOKEN_KEY)
 
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`
-    }
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`
+  }
 
-    return config
-  },
-  (error) => Promise.reject(error)
-)
+  return config
+})
+
+function notifyIfNeeded(config, status, message) {
+  const isRead = (config?.method || 'get').toLowerCase() === 'get'
+
+  if (isRead || config?.silent || status === 401) {
+    return
+  }
+
+  useToast().error(message)
+}
 
 api.interceptors.response.use(
   (response) => response.data,
 
   (error) => {
+    let normalized
+
     if (error.response) {
       const apiError = error.response.data
 
@@ -54,25 +47,28 @@ api.interceptors.response.use(
         }
       }
 
-      return Promise.reject({
-        message: apiError.message || 'Ocorreu um erro na requisição.',
-        errors: apiError.errors || [],
+      normalized = {
+        message: apiError?.message || MESSAGES.GENERIC_ERROR,
+        errors: apiError?.errors || [],
         status: error.response.status,
-      })
+      }
     } else if (error.request) {
-      return Promise.reject({
-        message:
-          'Não foi possível se conectar ao servidor. Verifique sua conexão ou tente novamente.',
+      normalized = {
+        message: MESSAGES.NETWORK_ERROR,
         errors: [],
         status: null,
-      })
+      }
     } else {
-      return Promise.reject({
-        message: 'Erro inesperado ao preparar a requisição.',
+      normalized = {
+        message: MESSAGES.REQUEST_SETUP_ERROR,
         errors: [],
         status: null,
-      })
+      }
     }
+
+    notifyIfNeeded(error.config, normalized.status, normalized.message)
+
+    return Promise.reject(normalized)
   }
 )
 
