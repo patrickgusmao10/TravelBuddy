@@ -1,7 +1,5 @@
 <script setup>
-import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useAuth } from '../../composables/useAuth'
+import { useAuthenticatedAction } from '../../composables/useAuthenticatedAction'
 import { toggleFollow } from '../../services/followService'
 
 const props = defineProps({
@@ -11,47 +9,26 @@ const props = defineProps({
 const following = defineModel('following', { type: Boolean, default: false })
 const followersCount = defineModel('followersCount', { type: Number, default: 0 })
 
-const route = useRoute()
-const router = useRouter()
-const { isAuthenticated } = useAuth()
-
-const isBusy = ref(false)
-const errorMessage = ref('')
-
-async function handleClick() {
-  if (!isAuthenticated.value) {
-    router.push({ name: 'login', query: { redirect: route.fullPath } })
-    return
-  }
-
-  if (isBusy.value) {
-    return
-  }
-
-  isBusy.value = true
-  errorMessage.value = ''
-
+async function performFollow() {
   const previousFollowing = following.value
   const previousCount = followersCount.value
   const nowFollowing = !previousFollowing
 
   following.value = nowFollowing
-  followersCount.value = Math.max(0, previousCount + (nowFollowing ? 1 : -1))
+  followersCount.value = previousCount + (nowFollowing ? 1 : -1)
 
   try {
     const response = await toggleFollow(props.userId)
-    
+
     following.value = response.data.isFollowing
     followersCount.value = response.data.followersCount
-
-  } catch (error) {
+  } catch {
     following.value = previousFollowing
     followersCount.value = previousCount
-    errorMessage.value = error.message
-  } finally {
-    isBusy.value = false
   }
 }
+
+const { run: handleClick, isBusy } = useAuthenticatedAction(performFollow)
 </script>
 
 <template>
@@ -66,8 +43,5 @@ async function handleClick() {
     >
       {{ following ? 'Seguindo' : 'Seguir' }}
     </button>
-    <div v-if="errorMessage" class="text-danger small mt-1">
-      {{ errorMessage }}
-    </div>
   </div>
 </template>

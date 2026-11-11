@@ -1,8 +1,6 @@
-
 <script setup>
 import { ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useAuth } from '../../composables/useAuth'
+import { useAuthenticatedAction } from '../../composables/useAuthenticatedAction'
 import { toggleLike } from '../../services/likeService'
 
 const props = defineProps({
@@ -11,28 +9,10 @@ const props = defineProps({
   initialCount: { type: Number, default: 0 },
 })
 
-const route = useRoute()
-const router = useRouter()
-const { isAuthenticated } = useAuth()
-
 const liked = ref(props.initialLiked)
 const likesCount = ref(props.initialCount)
-const isBusy = ref(false)
-const errorMessage = ref('')
 
-async function handleClick() {
-  if (!isAuthenticated.value) {
-    router.push({ name: 'login', query: { redirect: route.fullPath } })
-    return
-  }
-
-  if (isBusy.value) {
-    return
-  }
-
-  isBusy.value = true
-  errorMessage.value = ''
-
+async function performLike() {
   const previousLiked = liked.value
   const previousCount = likesCount.value
 
@@ -44,14 +24,13 @@ async function handleClick() {
 
     liked.value = response.data.liked
     likesCount.value = response.data.likesCount
-  } catch (error) {
+  } catch {
     liked.value = previousLiked
     likesCount.value = previousCount
-    errorMessage.value = error.message
-  } finally {
-    isBusy.value = false
   }
 }
+
+const { run: handleClick } = useAuthenticatedAction(performLike)
 </script>
 
 <template>
@@ -67,9 +46,5 @@ async function handleClick() {
       {{ likesCount }}
       <span class="visually-hidden">{{ liked ? 'Descurtir' : 'Curtir' }}</span>
     </button>
-
-    <div v-if="errorMessage" class="text-danger small mt-1">
-      {{ errorMessage }}
-    </div>
   </div>
 </template>
