@@ -1,8 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getPublicProfile } from '../../services/userService'
 import { getFollowers, getFollowing } from '../../services/followService'
+import { useAsyncData } from '../../composables/useAsyncData'
 import { getProfilePictureUrl } from '../../utils/media'
 
 const props = defineProps({
@@ -11,53 +12,29 @@ const props = defineProps({
 
 const route = useRoute()
 
-const profile = ref(null)
-const people = ref([])
-const isLoading = ref(true)
-const apiErrorMessage = ref('')
+async function fetchList() {
+  const profileResponse = await getPublicProfile(route.params.username)
+  const loadPeople = props.kind === 'followers' ? getFollowers : getFollowing
+  const listResponse = await loadPeople(profileResponse.data.id)
 
-async function loadList() {
-  const username = route.params.username
-  const kind = props.kind
-
-  isLoading.value = true
-  apiErrorMessage.value = ''
-  profile.value = null
-  people.value = []
-
-  try {
-    const profileResponse = await getPublicProfile(username)
-
-    if (route.params.username !== username || props.kind !== kind) return
-
-    profile.value = profileResponse.data
-
-    const listResponse = kind === 'followers'
-      ? await getFollowers(profile.value.id)
-      : await getFollowing(profile.value.id)
-
-    if (route.params.username !== username || props.kind !== kind) return
-
-    people.value = listResponse.data
-  } catch (error) {
-    if (route.params.username !== username || props.kind !== kind) return
-
-    apiErrorMessage.value =
-      error.status === 404
-        ? 'Usuário não encontrado.'
-        : error.message || 'Não foi possível carregar a lista.'
-  } finally {
-    if (route.params.username === username && props.kind === kind) {
-      isLoading.value = false
+  return {
+    data: {
+      profile: profileResponse.data,
+      people: listResponse.data
     }
   }
 }
 
-watch(
-  () => [props.kind, route.params.username],
-  loadList,
-  { immediate: true }
-)
+const {
+  data: result,
+  isLoading,
+  error
+} = useAsyncData(fetchList, {
+  watch: () => [props.kind, route.params.username]
+})
+
+const profile = computed(() => result.value?.profile)
+const people = computed(() => result.value?.people ?? [])
 </script>
 
 <template>
@@ -68,8 +45,8 @@ watch(
           Carregando...
         </p>
 
-        <p v-else-if="apiErrorMessage" class="text-danger text-center">
-          {{ apiErrorMessage }}
+        <p v-else-if="error" class="text-danger text-center">
+          {{ error }}
         </p>
 
         <template v-else-if="profile">

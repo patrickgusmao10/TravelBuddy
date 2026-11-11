@@ -1,52 +1,20 @@
-
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getDestinationById } from '../services/userService'
+import { useAsyncData } from '../composables/useAsyncData'
 import { getDestinationImageUrl, getProfilePictureUrl } from '../utils/media'
 import LikeButton from '../components/destination/LikeButton.vue'
 import CommentSection from '../components/destination/CommentSection.vue'
 
 const route = useRoute()
 
-const destination = ref(null)
-const isOwner = ref(false)
-const errorMessage = ref('')
-const isLoading = ref(true)
+const { data: destination, isLoading, error } = useAsyncData(
+  () => getDestinationById(route.params.id),
+  { watch: () => route.params.id }
+)
 
-async function loadDestination(id) {
-  isLoading.value = true
-  destination.value = null
-  isOwner.value = false
-  errorMessage.value = ''
-
-  try {
-    const response = await getDestinationById(id)
-
-    if (String(route.params.id) !== String(id)) return
-
-    destination.value = response.data
-    isOwner.value = response.data.isOwner
-  } catch (error) {
-    if (String(route.params.id) !== String(id)) return
-
-    errorMessage.value =
-      error.response?.data?.message ||
-      'Destino não encontrado.'
-  } finally {
-    if (String(route.params.id) === String(id)) {
-      isLoading.value = false
-    }
-  }
-}
-
-onMounted(() => {
-  loadDestination(route.params.id)
-})
-
-watch(() => route.params.id, (newId) => {
-  loadDestination(newId)
-})
+const isOwner = computed(() => destination.value?.isOwner ?? false)
 </script>
 
 <template>
@@ -56,11 +24,11 @@ watch(() => route.params.id, (newId) => {
     </p>
 
     <div
-      v-else-if="errorMessage"
+      v-else-if="error"
       class="alert alert-danger"
       role="alert"
     >
-      {{ errorMessage }}
+      {{ error }}
     </div>
 
     <div v-else-if="destination" class="destination-detail">

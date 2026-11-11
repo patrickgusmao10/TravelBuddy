@@ -1,13 +1,12 @@
-
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuth } from '../../composables/useAuth'
+import { useAsyncData } from '../../composables/useAsyncData'
 import { getComments, addComment } from '../../services/commentService'
 import { getProfilePictureUrl } from '../../utils/media'
 import { formatDateTime } from '../../utils/format'
-
-const COMMENT_MAX = 500
+import { LIMITS } from '../../config/constants'
 
 const props = defineProps({
   destinationId: { type: Number, required: true },
@@ -16,43 +15,34 @@ const props = defineProps({
 const route = useRoute()
 const { isAuthenticated } = useAuth()
 
-const comments = ref([])
-const isLoading = ref(true)
-const loadErrorMessage = ref('')
+const {
+  data: comments,
+  isLoading,
+  error: loadErrorMessage,
+} = useAsyncData(
+  () => getComments(props.destinationId),
+  { initialData: [] }
+)
 
 const newContent = ref('')
 const contentError = ref('')
 const isSubmitting = ref(false)
-const submitErrorMessage = ref('')
 
-const charsRemaining = computed(() => COMMENT_MAX - newContent.value.length)
-
-onMounted(async () => {
-  try {
-    const response = await getComments(props.destinationId)
-    comments.value = response.data
-  } catch (error) {
-    loadErrorMessage.value = error.message
-  } finally {
-    isLoading.value = false
-  }
-})
+const charsRemaining = computed(() => LIMITS.COMMENT_MAX - newContent.value.length)
 
 function validate() {
   contentError.value = ''
 
   if (!newContent.value.trim()) {
     contentError.value = 'O comentário não pode ser vazio.'
-  } else if (newContent.value.length > COMMENT_MAX) {
-    contentError.value = `O comentário deve ter no máximo ${COMMENT_MAX} caracteres.`
+  } else if (newContent.value.length > LIMITS.COMMENT_MAX) {
+    contentError.value = `O comentário deve ter no máximo ${LIMITS.COMMENT_MAX} caracteres.`
   }
 
   return contentError.value === ''
 }
 
 async function handleSubmit() {
-  submitErrorMessage.value = ''
-
   if (!validate()) {
     return
   }
@@ -63,8 +53,7 @@ async function handleSubmit() {
     const response = await addComment(props.destinationId, newContent.value.trim())
     comments.value.unshift(response.data)
     newContent.value = ''
-  } catch (error) {
-    submitErrorMessage.value = error.message
+  } catch {
   } finally {
     isSubmitting.value = false
   }
@@ -91,7 +80,7 @@ async function handleSubmit() {
 
       <div class="d-flex justify-content-between align-items-center mt-2">
         <small :class="charsRemaining < 0 ? 'text-danger' : 'text-muted'">
-          {{ newContent.length }}/{{ COMMENT_MAX }}
+          {{ newContent.length }}/{{ LIMITS.COMMENT_MAX }}
         </small>
 
         <button
@@ -102,10 +91,6 @@ async function handleSubmit() {
           {{ isSubmitting ? 'Enviando...' : 'Comentar' }}
         </button>
       </div>
-
-      <p v-if="submitErrorMessage" class="text-danger small mt-2 mb-0">
-        {{ submitErrorMessage }}
-      </p>
     </form>
 
     <p v-else class="text-muted mb-4">

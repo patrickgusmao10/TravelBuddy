@@ -1,55 +1,30 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
+import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 import { getPublicProfile } from '../../services/userService'
+import { useAsyncData } from '../../composables/useAsyncData'
 import { getProfilePictureUrl } from '../../utils/media'
 import DestinationCard from '../../components/base/DestinationCard.vue'
 import FollowButton from '../../components/profile/FollowButton.vue'
 
 const route = useRoute()
 
-const profile = ref(null)
-const isLoading = ref(true)
-const apiErrorMessage = ref('')
-
-async function loadProfile(username) {
-  isLoading.value = true
-  apiErrorMessage.value = ''
-  profile.value = null
-
-  try {
-    const response = await getPublicProfile(username)
-
-    if (route.params.username !== username) return
-
-    profile.value = response.data
-  } catch (error) {
-    if (route.params.username !== username) return
-
-    if (error.status === 404) {
-      apiErrorMessage.value = 'Usuário não encontrado.'
-    } else {
-      apiErrorMessage.value =
-        error.message ||
-        'Não foi possível carregar o perfil.'
-    }
-  } finally {
-    if (route.params.username === username) {
-      isLoading.value = false
-    }
-  }
-}
-
-onMounted(() => {
-  loadProfile(route.params.username)
-})
-
-watch(
-  () => route.params.username,
-  (username) => {
-    loadProfile(username)
-  }
+const {
+  data: profile,
+  isLoading,
+  error: loadError,
+} = useAsyncData(
+  () => getPublicProfile(route.params.username),
+  { watch: () => route.params.username }
 )
+
+const error = computed(() => {
+  if (!loadError.value) return ''
+
+  return loadError.value.includes('404')
+    ? 'Usuário não encontrado.'
+    : loadError.value
+})
 </script>
 
 <template>
@@ -58,8 +33,8 @@ watch(
       Carregando...
     </p>
 
-    <p v-else-if="apiErrorMessage" class="text-danger text-center">
-      {{ apiErrorMessage }}
+    <p v-else-if="error" class="text-danger text-center">
+      {{ error }}
     </p>
 
     <div v-else-if="profile" class="row justify-content-center">

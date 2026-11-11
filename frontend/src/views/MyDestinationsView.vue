@@ -1,34 +1,25 @@
-
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { getMyDestinations, deleteDestination } from '../services/destinationService'
 import { useAuth } from '../composables/useAuth'
+import { useAsyncData } from '../composables/useAsyncData'
+import { useToast } from '../composables/useToast'
 import DestinationCard from '../components/base/DestinationCard.vue'
 import BaseModal from '../components/base/BaseModal.vue'
 
 const { currentUser } = useAuth()
+const toast = useToast()
 
-const destinations = ref([])
-const isLoading = ref(true)
-const apiErrorMessage = ref('')
+const {
+  data: destinations,
+  isLoading,
+  error,
+} = useAsyncData(getMyDestinations, { initialData: [] })
 
 const destinationToDelete = ref(null)
 const isDeleting = ref(false)
-const deleteErrorMessage = ref('')
-
-onMounted(async () => {
-  try {
-    const response = await getMyDestinations()
-    destinations.value = response.data
-  } catch (error) {
-    apiErrorMessage.value = error.message
-  } finally {
-    isLoading.value = false
-  }
-})
 
 function askDelete(destination) {
-  deleteErrorMessage.value = ''
   destinationToDelete.value = destination
 }
 
@@ -38,7 +29,6 @@ function cancelDelete() {
 
 async function confirmDelete() {
   isDeleting.value = true
-  deleteErrorMessage.value = ''
 
   try {
     await deleteDestination(destinationToDelete.value.id)
@@ -48,8 +38,8 @@ async function confirmDelete() {
     )
 
     destinationToDelete.value = null
-  } catch (error) {
-    deleteErrorMessage.value = error.message
+    toast.success('Destino excluído.')
+  } catch {
   } finally {
     isDeleting.value = false
   }
@@ -73,8 +63,8 @@ async function confirmDelete() {
       Carregando...
     </p>
 
-    <p v-else-if="apiErrorMessage" class="text-danger text-center">
-      {{ apiErrorMessage }}
+    <p v-else-if="error" class="text-danger text-center">
+      {{ error }}
     </p>
 
     <template v-else>
@@ -131,13 +121,6 @@ async function confirmDelete() {
         Tem certeza que deseja excluir
         <strong>{{ destinationToDelete.title }}</strong>?
         Essa ação não pode ser desfeita.
-      </p>
-
-      <p
-        v-if="deleteErrorMessage"
-        class="text-danger small mt-3 mb-0"
-      >
-        {{ deleteErrorMessage }}
       </p>
 
       <template #footer>

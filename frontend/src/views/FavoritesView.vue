@@ -1,30 +1,13 @@
-
 <script setup>
-import { ref, onMounted } from 'vue'
 import { getLikedDestinations } from '../services/likeService'
+import { useAsyncData } from '../composables/useAsyncData'
 import DestinationCard from '../components/base/DestinationCard.vue'
 
-const destinations = ref([])
-const isLoading = ref(true)
-const errorMessage = ref('')
-
-async function loadFavorites() {
-  isLoading.value = true
-  errorMessage.value = ''
-
-  try {
-    const response = await getLikedDestinations()
-    destinations.value = response.data
-  } catch (error) {
-    errorMessage.value =
-      error.response?.data?.message ||
-      'Não foi possível carregar os destinos favoritos.'
-  } finally {
-    isLoading.value = false
-  }
-}
-
-onMounted(loadFavorites)
+const {
+  data: destinations,
+  isLoading,
+  error,
+} = useAsyncData(getLikedDestinations, { initialData: [] })
 </script>
 
 <template>
@@ -36,11 +19,11 @@ onMounted(loadFavorites)
     </p>
 
     <div
-      v-else-if="errorMessage"
+      v-else-if="error"
       class="alert alert-danger"
       role="alert"
     >
-      {{ errorMessage }}
+      {{ error }}
     </div>
 
     <p v-else-if="destinations.length === 0" class="text-muted">

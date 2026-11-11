@@ -1,68 +1,17 @@
 <script setup>
-import { ref, onMounted } from 'vue'
 import { getFeed } from '../services/userService'
+import { usePaginatedList } from '../composables/usePaginatedList'
 import DestinationCard from '../components/base/DestinationCard.vue'
 import BaseButton from '../components/base/BaseButton.vue'
 
-const destinations = ref([])
-const page = ref(1)
-const limit = 12
-const hasMore = ref(true)
-
-const isLoading = ref(false)
-const isLoadingMore = ref(false)
-const apiErrorMessage = ref('')
-
-async function loadFeed() {
-  isLoading.value = true
-  apiErrorMessage.value = ''
-
-  try {
-    const response = await getFeed(1, limit)
-    const newDestinations = response.data
-
-    destinations.value = newDestinations
-    page.value = 1
-    hasMore.value = newDestinations.length === limit
-  } catch (error) {
-    apiErrorMessage.value =
-      error.response?.data?.message ||
-      'Erro ao carregar os destinos.'
-  } finally {
-    isLoading.value = false
-  }
-}
-
-async function loadMore() {
-  if (isLoadingMore.value || !hasMore.value) return
-
-  isLoadingMore.value = true
-  apiErrorMessage.value = ''
-
-  const nextPage = page.value + 1
-
-  try {
-    const response = await getFeed(nextPage, limit)
-    const newDestinations = response.data
-
-    destinations.value.push(...newDestinations)
-
-    // Atualiza a página somente após sucesso.
-    page.value = nextPage
-
-    hasMore.value = newDestinations.length === limit
-  } catch (error) {
-    apiErrorMessage.value =
-      error.response?.data?.message ||
-      'Erro ao carregar mais destinos.'
-  } finally {
-    isLoadingMore.value = false
-  }
-}
-
-onMounted(() => {
-  loadFeed()
-})
+const {
+  items: destinations,
+  hasMore,
+  isLoading,
+  isLoadingMore,
+  error,
+  loadMore,
+} = usePaginatedList(getFeed)
 </script>
 
 <template>
@@ -70,11 +19,11 @@ onMounted(() => {
     <h1>Feed Geral</h1>
 
     <div
-      v-if="apiErrorMessage"
+      v-if="error"
       class="alert alert-danger mt-3"
       role="alert"
     >
-      {{ apiErrorMessage }}
+      {{ error }}
     </div>
 
     <div v-if="isLoading" class="text-center mt-4">
@@ -93,7 +42,7 @@ onMounted(() => {
       </div>
 
       <div
-        v-if="!destinations.length && !apiErrorMessage"
+        v-if="!destinations.length && !error"
         class="text-center mt-4"
       >
         Nenhum destino encontrado.
