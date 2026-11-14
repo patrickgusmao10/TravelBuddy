@@ -849,3 +849,163 @@
 - [x] Evidências organizadas em `01 - Docs/atividade11`
 - [x] ZIP do backend preparado sem `node_modules`
 - [x] ZIP do frontend preparado sem `node_modules`
+
+# Checklist - Aula 12
+
+## Parte A - Backend
+
+### Etapa 1 - Leitura Guiada
+
+- [x] Leitura crítica dos módulos da API realizada
+- [x] Arquivo `checkpoint-02.md` criado
+- [x] Questões dos Blocos 2.1 a 2.6 analisadas
+- [x] Três perguntas adicionais do enunciado respondidas
+- [x] Testes de IDs inválidos realizados nas rotas equivalentes
+
+### Etapa 2 - Correção da Paginação
+
+- [x] Problema de paginação reproduzido antes da correção
+- [x] Constantes `PAGINATION` configuradas em `config/constants.js`
+- [x] Arquivo `utils/pagination.js` criado
+- [x] Função `parsePagination()` implementada
+- [x] Paginação aplicada ao Feed Geral
+- [x] Paginação aplicada ao Feed de Seguindo
+- [x] Valores fixos de paginação substituídos por constantes
+- [x] Testes de paginação realizados com sucesso
+- [x] Prints de paginação antes e depois registrados
+
+### Etapa 3 - Transação de Banco de Dados
+
+- [x] Transação Sequelize implementada no cadastro de destinos
+- [x] Criação do destino e atualização de `destinationsCount` realizadas na mesma transação
+- [x] Criação de destino testada com sucesso
+- [x] Contador de destinos atualizado corretamente
+
+### Etapa 4 - Regressão da API
+
+- [x] Perfil público e `isFollowing` validados
+- [x] Feed Geral validado
+- [x] Feed de Seguindo validado
+- [x] Seguir e deixar de seguir validados
+- [x] Listagem de seguidores validada
+- [x] Listagem de usuários seguindo validada
+- [x] Curtidas validadas
+- [x] Comentários validados
+- [x] Listagem de Meus Destinos validada
+- [x] Testes de regressão da API concluídos
+
+---
+
+## Parte B - Frontend
+
+### Etapa 1 - Constantes
+
+- [x] Arquivo `src/config/constants.js` criado
+- [x] Chaves de armazenamento centralizadas
+- [x] Limites de validação centralizados em `LIMITS`
+- [x] Constante `PAGE_SIZE` configurada
+- [x] Durações dos toasts centralizadas
+- [x] Mensagens de erro padronizadas
+- [x] `api.js` e `stores/auth.js` atualizados
+- [x] Services dos feeds utilizando constantes
+
+### Etapa 2 - Toasts e Interceptor
+
+- [x] Composable `useToast.js` criado
+- [x] Componente `ToastContainer.vue` criado
+- [x] `ToastContainer` integrado ao `App.vue`
+- [x] Interceptor Axios atualizado
+- [x] Tratamento de erros de ações centralizado
+- [x] Opção `silent: true` aplicada aos formulários
+- [x] Erros de leitura mantidos nas respectivas telas
+- [x] Redirecionamento em caso de erro 401 mantido
+- [x] Toasts de sucesso e erro implementados
+- [x] Tratamento de erros sem mensagens duplicadas
+
+### Etapa 3 - Composables e Refatoração
+
+- [x] Composable `useAsyncData.js` criado
+- [x] Proteção contra respostas antigas implementada com `lastCallId`
+- [x] Composable `usePaginatedList.js` criado
+- [x] `GeneralFeedView.vue` refatorado
+- [x] `FollowingFeedView.vue` refatorado
+- [x] `DestinationDetailView.vue` refatorado
+- [x] `PublicProfileView.vue` refatorado
+- [x] `FavoritesView.vue` refatorado
+- [x] `MyDestinationsView.vue` refatorado
+- [x] `FollowListView.vue` refatorado
+- [x] `CommentSection.vue` refatorado
+- [x] Estados de carregamento e erro padronizados
+- [x] Paginação dos feeds preservada
+- [x] Telas refatoradas testadas individualmente
+- [x] `MyProfileView.vue` e `EditDestinationView.vue` mantidos com carregamento próprio por preencherem formulários
+- [x] Decisão de não extrair o carregamento dos formulários registrada
+
+### Etapa 4 - useAuthenticatedAction
+
+- [x] Composable `useAuthenticatedAction.js` criado
+- [x] `LikeButton.vue` refatorado
+- [x] `FollowButton.vue` refatorado
+- [x] Controle de requisições simultâneas centralizado
+- [x] Atualização otimista preservada nos componentes
+- [x] Tratamento de erros integrado aos toasts
+- [x] Teste de três cliques rápidos realizado com Slow 4G
+- [x] Apenas uma requisição enviada durante o teste
+
+### Etapa 5 - Constantes nos Formulários
+
+- [x] `RegisterView.vue` atualizado
+- [x] `MyProfileView.vue` atualizado
+- [x] `UploadView.vue` atualizado
+- [x] `EditDestinationView.vue` atualizado
+- [x] Limites de validação substituídos por `LIMITS`
+- [x] Constantes de título e descrição adaptadas para destinos
+- [x] Contadores de caracteres validados
+- [x] Busca por referências `VIDEO_` realizada sem resultados
+- [x] Formulários testados após as alterações
+
+### Etapa 6 - Testes de Regressão
+
+- [x] Cadastro de usuário validado
+- [x] Login com senha incorreta e correta validado
+- [x] Edição de perfil validada
+- [x] Upload de destino validado
+- [x] Feed Geral e paginação validados
+- [x] Detalhes do destino validados
+- [x] Edição de destino validada
+- [x] Navegação entre destinos e perfis validada
+- [x] Curtir e descurtir validados
+- [x] Prevenção de requisições duplicadas validada
+- [x] Demais testes de regressão considerados aprovados
+- [x] Console do navegador verificado sem erros inesperados
+
+---
+
+## Evidências da Aula 12
+
+- [x] `checkpoint-02.md` criado
+- [x] Prints de paginação antes e depois salvos
+- [x] Prints de regressão da API organizados
+- [x] Evidências armazenadas em `01 - Docs/atividade12`
+- [x] `toast-erro.jpg` conferido
+- [x] `toast-sucesso.jpg` conferido
+- [x] `toast-modal.jpg` conferido
+- [x] `uma-requisicao.jpg` conferido
+- [x] `formulario-sem-toast.jpg` conferido
+
+---
+
+## Documentação e Entrega
+
+- [x] `respostas.md` da Aula 12 criado com as sete respostas
+- [x] ADR-013 registrada no `checkpoint-02.md`
+- [x] `checklists.md` atualizado com as atividades da Aula 12
+- [x] Alterações do código enviadas ao GitHub
+- [x] ZIP do backend preparado sem `node_modules`
+- [x] ZIP do frontend preparado sem `node_modules`
+
+---
+
+## Status
+
+**Aula 12 — Desenvolvimento, testes de regressão, documentação, evidências e checklist concluídos.**
