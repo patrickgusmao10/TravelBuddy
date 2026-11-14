@@ -1,13 +1,10 @@
-
 <script setup>
 import { reactive, ref, computed } from 'vue'
 import { uploadDestination } from '../services/destinationService'
 import BaseInput from '../components/base/BaseInput.vue'
 import BaseButton from '../components/base/BaseButton.vue'
 import FormCard from '../components/base/FormCard.vue'
-
-const TITLE_MAX = 100
-const DESCRIPTION_MAX = 500
+import { LIMITS } from '../config/constants'
 
 const form = reactive({
   title: '',
@@ -28,7 +25,7 @@ const apiErrorMessage = ref('')
 const successMessage = ref('')
 
 const descriptionCharsRemaining = computed(
-  () => DESCRIPTION_MAX - form.description.length
+  () => LIMITS.DESTINATION_DESCRIPTION_MAX - form.description.length
 )
 
 function handleImageChange(event) {
@@ -58,12 +55,12 @@ function validate() {
 
   if (!form.title.trim()) {
     errors.title = 'O título é obrigatório.'
-  } else if (form.title.length > TITLE_MAX) {
-    errors.title = `O título deve ter no máximo ${TITLE_MAX} caracteres.`
+  } else if (form.title.length > LIMITS.DESTINATION_TITLE_MAX) {
+    errors.title = `O título deve ter no máximo ${LIMITS.DESTINATION_TITLE_MAX} caracteres.`
   }
 
-  if (form.description.length > DESCRIPTION_MAX) {
-    errors.description = `A descrição deve ter no máximo ${DESCRIPTION_MAX} caracteres.`
+  if (form.description.length > LIMITS.DESTINATION_DESCRIPTION_MAX) {
+    errors.description = `A descrição deve ter no máximo ${LIMITS.DESTINATION_DESCRIPTION_MAX} caracteres.`
   }
 
   if (!selectedImage.value) {
@@ -147,7 +144,7 @@ async function handleSubmit() {
             class="form-text text-end"
             :class="{ 'text-danger': descriptionCharsRemaining < 0 }"
           >
-            {{ form.description.length }}/{{ DESCRIPTION_MAX }}
+            {{ form.description.length }}/{{ LIMITS.DESTINATION_DESCRIPTION_MAX }}
           </div>
         </template>
       </BaseInput>

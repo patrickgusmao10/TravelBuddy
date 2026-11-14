@@ -7,12 +7,11 @@ import BaseInput from '../../components/base/BaseInput.vue'
 import BaseButton from '../../components/base/BaseButton.vue'
 import FormCard from '../../components/base/FormCard.vue'
 import { useAuth } from '../../composables/useAuth'
+import { LIMITS } from '../../config/constants'
 
 const { updateUser } = useAuth()
 
 const router = useRouter()
-
-const BIO_MAX = 255
 
 const username = ref('')
 
@@ -36,7 +35,7 @@ const isSubmitting = ref(false)
 const apiErrorMessage = ref('')
 const successMessage = ref('')
 
-const bioCharsRemaining = computed(() => BIO_MAX - form.bio.length)
+const bioCharsRemaining = computed(() => LIMITS.BIO_MAX - form.bio.length)
 
 onMounted(async () => {
   try {
@@ -81,8 +80,8 @@ function validate() {
     errors.fullName = 'O nome completo é obrigatório.'
   }
 
-  if (form.bio.length > BIO_MAX) {
-    errors.bio = `A bio deve ter no máximo ${BIO_MAX} caracteres.`
+  if (form.bio.length > LIMITS.BIO_MAX) {
+    errors.bio = `A bio deve ter no máximo ${LIMITS.BIO_MAX} caracteres.`
   }
 
   return Object.values(errors).every((message) => message === '')
@@ -172,7 +171,7 @@ async function handleSubmit() {
             class="form-text text-end"
             :class="{ 'text-danger': bioCharsRemaining < 0 }"
           >
-            {{ form.bio.length }}/{{ BIO_MAX }}
+            {{ form.bio.length }}/{{ LIMITS.BIO_MAX }}
           </div>
         </template>
       </BaseInput>

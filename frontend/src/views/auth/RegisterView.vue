@@ -5,6 +5,7 @@ import { register } from '../../services/authService'
 import BaseInput from '../../components/base/BaseInput.vue'
 import BaseButton from '../../components/base/BaseButton.vue'
 import FormCard from '../../components/base/FormCard.vue'
+import { LIMITS } from '../../config/constants'
 
 const router = useRouter()
 
@@ -26,6 +27,7 @@ const errors = reactive({
 
 const isSubmitting = ref(false)
 const apiErrorMessage = ref('')
+
 function validate()
 {
   Object.keys(errors).forEach((key) => (errors[key] = ''))
@@ -34,8 +36,8 @@ function validate()
     errors.fullName = 'O nome completo é obrigatório.'
   }
 
-  if (form.username.trim().length < 3 || form.username.trim().length > 20) {
-    errors.username = 'O nome de usuário deve ter entre 3 e 20 caracteres.'
+  if (form.username.trim().length < LIMITS.USERNAME_MIN || form.username.trim().length > LIMITS.USERNAME_MAX) {
+    errors.username = `O nome de usuário deve ter entre ${LIMITS.USERNAME_MIN} e ${LIMITS.USERNAME_MAX} caracteres.`
   }
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -44,8 +46,8 @@ function validate()
     errors.email = 'Informe um e-mail válido.'
   }
 
-  if (form.password.length < 6) {
-    errors.password = 'A senha deve ter pelo menos 6 caracteres.'
+  if (form.password.length < LIMITS.PASSWORD_MIN) {
+    errors.password = `A senha deve ter pelo menos ${LIMITS.PASSWORD_MIN} caracteres.`
   }
 
   if (form.confirmPassword !== form.password) {
@@ -83,7 +85,6 @@ async function handleSubmit() {
   }
 }
 </script>
-
 
 <template>
   <FormCard title="Criar Conta no TravelBuddy">
