@@ -7,6 +7,8 @@ const fs = require('fs');
 const path = require('path');
 const { Op } = require('sequelize');
 const Follow = require('../follow/followModel');
+const Collection = require('../collection/collectionModel');
+const CollectionDestination = require('../collection/collectionDestinationModel');
 const { PAGINATION } = require('../../config/constants');
 
 async function createDestination({ title, description, imagePath, userId }) {
@@ -176,6 +178,23 @@ async function deleteDestination(destinationId, requestingUserId, isAdmin = fals
     });
 
     await Comment.destroy({
+      where: { destinationId: destination.id },
+      transaction: t
+    });
+
+    const entries = await CollectionDestination.findAll({
+      where: { destinationId: destination.id },
+      transaction: t
+    });
+
+    for (const entry of entries) {
+      await Collection.decrement('destinationsCount', {
+        where: { id: entry.collectionId },
+        transaction: t
+      });
+    }
+
+    await CollectionDestination.destroy({
       where: { destinationId: destination.id },
       transaction: t
     });
