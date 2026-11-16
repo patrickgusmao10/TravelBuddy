@@ -27,6 +27,12 @@ const routes = [
   },
 
   {
+    path: '/search',
+    name: 'search',
+    component: () => import('../views/SearchView.vue')
+  },
+
+  {
     path: '/destinos/upload',
     name: 'destination-upload',
     component: () => import('../views/UploadView.vue'),

@@ -7,6 +7,10 @@ const { currentUser } = useAuth()
 <template>
   <aside class="col-md-3 col-lg-2 d-none d-md-block sidebar py-4">
     <nav class="nav flex-column">
+      <router-link :to="{ name: 'search' }" class="nav-link">
+        <i class="bi bi-search me-2"></i> Explorar
+      </router-link>
+
       <router-link to="/feed/seguindo" class="nav-link">
         <i class="bi bi-person-check me-2" style="font-size: 1.15rem;"></i> Seguindo
       </router-link>
@@ -17,6 +21,10 @@ const { currentUser } = useAuth()
 
       <router-link to="/roteiros" class="nav-link">
         <i class="bi bi-map me-2"></i> Meus Roteiros
+      </router-link>
+
+      <router-link :to="{ name: 'my-collections' }" class="nav-link">
+        <i class="bi bi-collection me-2"></i> Minhas Coleções
       </router-link>
 
       <router-link to="/relatos" class="nav-link">

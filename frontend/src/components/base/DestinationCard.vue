@@ -1,4 +1,3 @@
-
 <script setup>
 import { computed } from 'vue'
 import { getDestinationImageUrl, getProfilePictureUrl } from '../../utils/media'

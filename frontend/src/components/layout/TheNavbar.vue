@@ -1,14 +1,25 @@
-
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuth } from '../../composables/useAuth'
 import { useClickOutside } from '../../composables/useClickOutside'
 import { getProfilePictureUrl } from '../../utils/media'
 
+const router = useRouter()
 const { isAuthenticated, currentUser, logout } = useAuth()
 
 const isMenuOpen = ref(false)
 const menuRef = ref(null)
+const searchText = ref('')
+
+function submitSearch() {
+  const q = searchText.value.trim()
+
+  if (!q) return
+
+  router.push({ name: 'search', query: { q } })
+  searchText.value = ''
+}
 
 function toggleMenu() {
   isMenuOpen.value = !isMenuOpen.value
@@ -27,6 +38,31 @@ useClickOutside(menuRef, closeMenu)
       <router-link class="navbar-brand" to="/">
         <i class="bi bi-play-fill"></i> TRAVELBUDDY
       </router-link>
+
+      <form
+        role="search"
+        class="d-flex align-items-center mx-3 flex-grow-1"
+        style="max-width: 400px;"
+        @submit.prevent="submitSearch"
+      >
+        <div class="input-group">
+          <input
+            v-model="searchText"
+            type="search"
+            class="form-control"
+            placeholder="Buscar destinos e pessoas"
+            aria-label="Buscar destinos e pessoas"
+          />
+
+          <button
+            type="submit"
+            class="btn btn-outline-secondary"
+            aria-label="Buscar"
+          >
+            <i class="bi bi-search"></i>
+          </button>
+        </div>
+      </form>
 
       <div class="d-flex align-items-center gap-2">
         <template v-if="!isAuthenticated">
@@ -105,6 +141,15 @@ useClickOutside(menuRef, closeMenu)
                   class="dropdown-item py-2"
                 >
                   <i class="bi bi-images me-2"></i> Meus Destinos
+                </router-link>
+              </li>
+
+              <li>
+                <router-link
+                  :to="{ name: 'my-collections' }"
+                  class="dropdown-item py-2"
+                >
+                  <i class="bi bi-collection me-2"></i> Minhas Coleções
                 </router-link>
               </li>
 
