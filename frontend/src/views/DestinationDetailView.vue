@@ -1,11 +1,13 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
+import { useAuthenticatedAction } from '../composables/useAuthenticatedAction'
 import { getDestinationById } from '../services/userService'
 import { useAsyncData } from '../composables/useAsyncData'
 import { getDestinationImageUrl, getProfilePictureUrl } from '../utils/media'
 import LikeButton from '../components/destination/LikeButton.vue'
 import CommentSection from '../components/destination/CommentSection.vue'
+import AddToCollectionModal from '../components/collection/AddToCollectionModal.vue'
 
 const route = useRoute()
 
@@ -15,6 +17,12 @@ const { data: destination, isLoading, error } = useAsyncData(
 )
 
 const isOwner = computed(() => destination.value?.isOwner ?? false)
+
+const isSaving = ref(false)
+
+const { run: openSaveModal } = useAuthenticatedAction(async () => {
+  isSaving.value = true
+})
 </script>
 
 <template>
@@ -93,16 +101,32 @@ const isOwner = computed(() => destination.value?.isOwner ?? false)
             {{ destination.description }}
           </p>
 
-          <LikeButton
-            :key="destination.id"
-            :destination-id="Number(destination.id)"
-            :initial-liked="destination.isLiked"
-            :initial-count="destination.likesCount"
-          />
+          <div class="d-flex align-items-center gap-2 mb-3">
+            <LikeButton
+              :key="destination.id"
+              :destination-id="Number(destination.id)"
+              :initial-liked="destination.isLiked"
+              :initial-count="destination.likesCount"
+            />
+
+            <button
+              type="button"
+              class="btn btn-outline-secondary rounded-pill"
+              @click="openSaveModal"
+            >
+              <i class="bi bi-bookmark-plus"></i> Salvar
+            </button>
+          </div>
 
           <CommentSection
             :key="destination.id"
             :destination-id="Number(destination.id)"
+          />
+
+          <AddToCollectionModal
+            v-if="isSaving"
+            :destination-id="Number(destination.id)"
+            @close="isSaving = false"
           />
         </div>
       </div>

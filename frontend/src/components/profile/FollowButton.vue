@@ -1,6 +1,7 @@
 <script setup>
 import { useAuthenticatedAction } from '../../composables/useAuthenticatedAction'
 import { toggleFollow } from '../../services/followService'
+import { runOptimistic } from '../../utils/optimistic'
 
 const props = defineProps({
   userId: { type: Number, required: true },
@@ -9,23 +10,27 @@ const props = defineProps({
 const following = defineModel('following', { type: Boolean, default: false })
 const followersCount = defineModel('followersCount', { type: Number, default: 0 })
 
-async function performFollow() {
-  const previousFollowing = following.value
-  const previousCount = followersCount.value
-  const nowFollowing = !previousFollowing
+function performFollow() {
+  return runOptimistic({
+    apply() {
+      const previousFollowing = following.value
+      const previousCount = followersCount.value
+      const nowFollowing = !previousFollowing
 
-  following.value = nowFollowing
-  followersCount.value = previousCount + (nowFollowing ? 1 : -1)
+      following.value = nowFollowing
+      followersCount.value = previousCount + (nowFollowing ? 1 : -1)
 
-  try {
-    const response = await toggleFollow(props.userId)
-
-    following.value = response.data.isFollowing
-    followersCount.value = response.data.followersCount
-  } catch {
-    following.value = previousFollowing
-    followersCount.value = previousCount
-  }
+      return () => {
+        following.value = previousFollowing
+        followersCount.value = previousCount
+      }
+    },
+    request: () => toggleFollow(props.userId),
+    confirm(data) {
+      following.value = data.isFollowing
+      followersCount.value = data.followersCount
+    },
+  })
 }
 
 const { run: handleClick, isBusy } = useAuthenticatedAction(performFollow)

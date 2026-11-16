@@ -98,6 +98,19 @@ const routes = [
   },
 
   {
+    path: '/colecoes/minhas',
+    name: 'my-collections',
+    component: () => import('../views/collection/MyCollectionsView.vue'),
+    meta: { requiresAuth: true }
+  },
+
+  {
+    path: '/colecoes/:id',
+    name: 'collection-detail',
+    component: () => import('../views/collection/CollectionDetailView.vue')
+  },
+
+  {
     path: '/relatos/novo',
     name: 'create-report',
     component: () => import('../views/CreateReportView.vue'),
