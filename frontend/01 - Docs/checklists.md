@@ -1009,3 +1009,75 @@
 ## Status
 
 **Aula 12 — Desenvolvimento, testes de regressão, documentação, evidências e checklist concluídos.**
+
+
+## Aula 13 — Coleções, Atualização Otimista e Busca com Debounce
+
+### Parte A — Backend
+
+#### Etapa 1 — Constantes, parseId e followController
+- [x] Constantes de validação e de busca criadas.
+- [x] parseId criado e utilizado pelo followController, sem a função antiga.
+
+#### Etapa 2 — Models e Associações
+- [x] Dois models e seis associações implementados.
+- [x] Tabelas, índices e chaves estrangeiras conferidos no banco.
+
+#### Etapa 3 — Validator, Service, Controller e Rotas
+- [x] Quatro arquivos do módulo de coleções criados e registrados no app.js.
+- [x] Operações de escrita e atualização do contador executadas na mesma transação.
+- [x] Acesso privado protegido com HTTP 403 e isOwner correto para dona, outra pessoa e visitante.
+
+#### Etapa 4 — Busca Global
+- [x] Busca no banco com escape de caracteres especiais, Promise.all e tratamento da entrada.
+- [x] Controller com async/await e rota utilizando asyncHandler.
+
+#### Etapa 5 — Exclusão de Destinos
+- [x] Exclusão limpa a tabela de junção e desconta o contador das coleções na mesma transação.
+- [x] Teste de controle realizado e comportamento descrito no respostas.md.
+
+#### Etapa 6 — Testes da API
+- [x] Os onze grupos de testes da API executados com sucesso.
+
+### Parte B — Frontend
+
+#### Checagem de Alcançabilidade
+- [x] Minhas Coleções acessível pelo menu do avatar e pela Sidebar.
+- [x] Criação e exclusão acessíveis pela tela Minhas Coleções.
+- [x] Detalhe da coleção acessível pelo cartão.
+- [x] Botão Salvar disponível no detalhe do destino, com redirecionamento para login quando necessário.
+- [x] Remoção de destinos disponível no detalhe da coleção para a dona.
+- [x] Busca acessível pela Navbar e pela opção Explorar da Sidebar.
+- [x] Rotas de coleções e busca configuradas corretamente.
+
+**Decisão de escopo:** coleções públicas de outras pessoas são acessíveis somente por link direto. Não existe uma tela de listagem das coleções públicas de outros usuários, conforme a lacuna conhecida indicada pelo professor.
+
+#### Etapa 1 — Constantes, Service e Home
+- [x] Constantes configuradas, collectionService com sete funções e Home sem chamadas de busca de teste.
+
+#### Etapa 2 — Atualização Otimista
+- [x] Utilitário runOptimistic criado.
+- [x] Botões de curtir e seguir refatorados, sem regressão.
+
+#### Etapa 3 — Minhas Coleções e Detalhe
+- [x] Modal de criação, listagem e detalhe funcionando, incluindo tratamento de HTTP 403 e 404 na própria tela.
+- [x] Cartão clicável com botão Excluir funcionando sobre o link esticado.
+
+#### Etapa 4 — Modal Salvar
+- [x] Modal com caixas marcadas conforme o servidor, atualização otimista, rollback e bloqueio por linha.
+- [x] Botão Salvar no detalhe do destino, incluindo comportamento para visitantes.
+
+#### Etapa 5 — Debounce, Busca e Navbar
+- [x] Digitar uma palavra inteira sem pausa gera uma requisição de busca no Network.
+- [x] Termo persistido na URL; F5 e links funcionam; Navbar encaminha para a busca; Voltar não percorre cada pausa da digitação.
+
+#### Etapa 6 — Teste Prático Completo
+- [x] Os seis grupos de testes práticos executados em sequência, utilizando a navegação da aplicação.
+
+### Entrega
+- [x] Código do backend e frontend implementado.
+- [x] respostas.md da Aula 13 criado com as oito respostas.
+- [x] checklists.md atualizado com os itens da Aula 13.
+- [x] Lacuna das coleções públicas registrada como decisão de escopo.
+- [x] ZIPs do backend e frontend gerados sem node_modules.
+- [x] Evidências da Aula 13 organizadas na pasta 01 - Docs/atividade13.
