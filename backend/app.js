@@ -12,6 +12,7 @@ var sequelize = require('./config/database');
 var likeRoutes = require('./modules/like/likeRoutes');
 var commentRoutes = require('./modules/comment/commentRoutes');
 var followRoutes = require('./modules/follow/followRoutes');
+var collectionRoutes = require('./modules/collection/collectionRoutes');
 
 require('./config/associations');
 
@@ -34,6 +35,7 @@ app.use('/api', userRoutes);
 app.use('/api', likeRoutes);
 app.use('/api', commentRoutes);
 app.use('/api', followRoutes);
+app.use('/api', collectionRoutes);
 
 app.use((req, res) => {
   res.status(404).json({

@@ -1,4 +1,3 @@
-
 const { body, validationResult } = require('express-validator');
 const { VALIDATION } = require('../../config/constants');
 
