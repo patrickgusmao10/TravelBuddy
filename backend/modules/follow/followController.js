@@ -2,21 +2,10 @@ const followService = require('./followService');
 const destinationService = require('../destination/destinationService');
 const { success } = require('../../middlewares/apiResponse');
 const { parsePagination } = require('../../utils/pagination');
-
-function parseUserId(rawValue) {
-    const userId = Number(rawValue);
-
-    if (!Number.isInteger(userId) || userId <= 0) {
-        const error = new Error('Identificador de usuário inválido.');
-        error.status = 400;
-        throw error;
-    }
-
-    return userId;
-}
+const { parseId } = require('../../utils/parseId');
 
 exports.toggleFollow = async (req, res) => {
-    const followingId = parseUserId(req.params.userId);
+    const followingId = parseId(req.params.userId, 'usuário');
     const followerId = req.user.id;
 
     const result = await followService.toggleFollow(followerId, followingId);
@@ -29,7 +18,7 @@ exports.toggleFollow = async (req, res) => {
 };
 
 exports.getFollowStatus = async (req, res) => {
-    const followingId = parseUserId(req.params.userId);
+    const followingId = parseId(req.params.userId, 'usuário');
     const followerId = req.user.id;
 
     const isFollowing = await followService.getFollowStatus(followerId, followingId);
@@ -38,13 +27,13 @@ exports.getFollowStatus = async (req, res) => {
 };
 
 exports.getFollowers = async (req, res) => {
-    const followers = await followService.getFollowers(parseUserId(req.params.userId));
+    const followers = await followService.getFollowers(parseId(req.params.userId, 'usuário'));
 
     return success(res, followers);
 };
 
 exports.getFollowing = async (req, res) => {
-    const following = await followService.getFollowing(parseUserId(req.params.userId));
+    const following = await followService.getFollowing(parseId(req.params.userId, 'usuário'));
 
     return success(res, following);
 };
