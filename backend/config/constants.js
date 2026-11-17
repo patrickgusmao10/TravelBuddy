@@ -20,5 +20,15 @@ module.exports = {
         MIN_LENGTH: 2,
         MAX_LENGTH: 100,
         LIMIT: 10
+    },
+    NOTIFICATION: {
+        TYPES: {
+            LIKE: 'like',
+            COMMENT: 'comment',
+            FOLLOW: 'follow'
+        }
+    },
+    REPORT: {
+        REASONS: ['inappropriate_content', 'harassment', 'spam', 'copyright', 'other']
     }
 };

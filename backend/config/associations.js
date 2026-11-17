@@ -5,6 +5,8 @@ const Comment = require('../modules/comment/commentModel');
 const Follow = require('../modules/follow/followModel');
 const Collection = require('../modules/collection/collectionModel');
 const CollectionDestination = require('../modules/collection/collectionDestinationModel');
+const Notification = require('../modules/notification/notificationModel');
+const Report = require('../modules/report/reportModel');
 
 User.hasMany(Destination, { foreignKey: 'userId' });
 Destination.belongsTo(User, { foreignKey: 'userId' });
@@ -32,3 +34,10 @@ CollectionDestination.belongsTo(Collection, { foreignKey: 'collectionId' });
 
 Destination.hasMany(CollectionDestination, { foreignKey: 'destinationId' });
 CollectionDestination.belongsTo(Destination, { foreignKey: 'destinationId' });
+
+Notification.belongsTo(User, { as: 'Recipient', foreignKey: 'userId' });
+Notification.belongsTo(User, { as: 'Actor', foreignKey: 'actorId' });
+Notification.belongsTo(Destination, { foreignKey: 'destinationId' });
+
+Report.belongsTo(User, { as: 'Reporter', foreignKey: 'userId' });
+Report.belongsTo(Destination, { foreignKey: 'destinationId' });
