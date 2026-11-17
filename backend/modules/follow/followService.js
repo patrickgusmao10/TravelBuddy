@@ -1,6 +1,8 @@
 const sequelize = require('../../config/database');
 const Follow = require('./followModel');
 const User = require('../user/userModel');
+const { createNotification, removeNotification } = require('../notification/notificationService');
+const { NOTIFICATION } = require('../../config/constants');
 
 const PERSON_ATTRIBUTES = ['id', 'username', 'fullName', 'profilePicture'];
 
@@ -35,12 +37,22 @@ async function toggleFollow(followerId, followingId) {
         if (created) {
             await User.increment('followersCount', { where: { id: followingId }, transaction: t });
             await User.increment('followingCount', { where: { id: followerId }, transaction: t });
+            await createNotification({
+                userId: followingId,
+                actorId: followerId,
+                type: NOTIFICATION.TYPES.FOLLOW
+            }, t);
             return true;
         }
 
         await follow.destroy({ transaction: t });
         await User.decrement('followersCount', { where: { id: followingId }, transaction: t });
         await User.decrement('followingCount', { where: { id: followerId }, transaction: t });
+        await removeNotification({
+            userId: followingId,
+            actorId: followerId,
+            type: NOTIFICATION.TYPES.FOLLOW
+        }, t);
         return false;
     });
 

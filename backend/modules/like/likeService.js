@@ -1,8 +1,9 @@
-
 const sequelize = require('../../config/database');
 const Like = require('./likeModel');
 const Destination = require('../destination/destinationModel');
 const User = require('../user/userModel');
+const { createNotification, removeNotification } = require('../notification/notificationService');
+const { NOTIFICATION } = require('../../config/constants');
 
 async function toggleLike(userId, destinationId) {
   const destination = await Destination.findByPk(destinationId);
@@ -22,11 +23,23 @@ async function toggleLike(userId, destinationId) {
 
     if (created) {
       await destination.increment('likesCount', { transaction: t });
+      await createNotification({
+        userId: destination.userId,
+        actorId: userId,
+        type: NOTIFICATION.TYPES.LIKE,
+        destinationId: destination.id
+      }, t);
       return true;
     }
 
     await like.destroy({ transaction: t });
     await destination.decrement('likesCount', { transaction: t });
+    await removeNotification({
+      userId: destination.userId,
+      actorId: userId,
+      type: NOTIFICATION.TYPES.LIKE,
+      destinationId: destination.id
+    }, t);
     return false;
   });
 

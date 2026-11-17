@@ -1,8 +1,9 @@
-
 const sequelize = require('../../config/database');
 const Comment = require('./commentModel');
 const Destination = require('../destination/destinationModel');
 const User = require('../user/userModel');
+const { createNotification } = require('../notification/notificationService');
+const { NOTIFICATION } = require('../../config/constants');
 
 const AUTHOR_ATTRIBUTES = ['id', 'username', 'fullName', 'profilePicture'];
 
@@ -28,6 +29,13 @@ async function addComment(userId, destinationId, content) {
     );
 
     await destination.increment('commentsCount', { transaction: t });
+
+    await createNotification({
+      userId: destination.userId,
+      actorId: userId,
+      type: NOTIFICATION.TYPES.COMMENT,
+      destinationId: destination.id
+    }, t);
 
     return created;
   });

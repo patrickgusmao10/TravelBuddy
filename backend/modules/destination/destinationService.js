@@ -9,6 +9,8 @@ const { Op } = require('sequelize');
 const Follow = require('../follow/followModel');
 const Collection = require('../collection/collectionModel');
 const CollectionDestination = require('../collection/collectionDestinationModel');
+const Notification = require('../notification/notificationModel');
+const Report = require('../report/reportModel');
 const { PAGINATION } = require('../../config/constants');
 
 async function createDestination({ title, description, imagePath, userId }) {
@@ -195,6 +197,16 @@ async function deleteDestination(destinationId, requestingUserId, isAdmin = fals
     }
 
     await CollectionDestination.destroy({
+      where: { destinationId: destination.id },
+      transaction: t
+    });
+
+    await Report.destroy({
+      where: { destinationId: destination.id },
+      transaction: t
+    });
+
+    await Notification.destroy({
       where: { destinationId: destination.id },
       transaction: t
     });
