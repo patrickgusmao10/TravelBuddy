@@ -9,5 +9,5 @@ export function login(payload) {
 }
 
 export function logout() {
-  return api.post('/logout', null, { silent: true })
+  return api.post('/logout', undefined, { silent: true })
 }

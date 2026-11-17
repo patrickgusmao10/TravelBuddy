@@ -32,3 +32,21 @@ export const MESSAGES = {
   NETWORK_ERROR: 'Não foi possível se conectar ao servidor. Verifique sua conexão ou tente novamente mais tarde.',
   REQUEST_SETUP_ERROR: 'Erro inesperado ao preparar a requisição.',
 }
+
+export const NOTIFICATIONS = {
+  POLL_MS: 30000,
+}
+
+export const NOTIFICATION_TEXT = {
+  like: 'curtiu o seu destino',
+  comment: 'comentou no seu destino',
+  follow: 'começou a seguir você',
+}
+
+export const REPORT_REASONS = [
+  { value: 'inappropriate_content', label: 'Conteúdo impróprio' },
+  { value: 'harassment', label: 'Assédio ou discurso de ódio' },
+  { value: 'spam', label: 'Spam ou golpes' },
+  { value: 'copyright', label: 'Violação de direitos autorais' },
+  { value: 'other', label: 'Outro' },
+]

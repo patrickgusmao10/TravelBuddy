@@ -1,12 +1,27 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watch, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../../composables/useAuth'
 import { useClickOutside } from '../../composables/useClickOutside'
+import { useNotificationStore } from '../../stores/notifications'
 import { getProfilePictureUrl } from '../../utils/media'
 
 const router = useRouter()
 const { isAuthenticated, currentUser, logout } = useAuth()
+
+const notificationStore = useNotificationStore()
+const unreadCount = computed(() => notificationStore.unreadCount)
+const unreadLabel = computed(() => (unreadCount.value > 99 ? '99+' : String(unreadCount.value)))
+
+watch(isAuthenticated, (loggedIn) => {
+  if (loggedIn) {
+    notificationStore.startPolling()
+  } else {
+    notificationStore.stopPolling()
+  }
+}, { immediate: true })
+
+onUnmounted(() => notificationStore.stopPolling())
 
 const isMenuOpen = ref(false)
 const menuRef = ref(null)
@@ -85,6 +100,20 @@ useClickOutside(menuRef, closeMenu)
             class="nav-link"
           >
             Enviar Destino
+          </router-link>
+
+          <router-link
+            :to="{ name: 'notifications' }"
+            class="btn btn-outline-dark border-0 position-relative"
+            :aria-label="unreadCount > 0 ? `Notificações (${unreadCount} não lidas)` : 'Notificações'"
+          >
+            <i class="bi bi-bell"></i>
+            <span
+              v-if="unreadCount > 0"
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+            >
+              {{ unreadLabel }}
+            </span>
           </router-link>
 
           <div

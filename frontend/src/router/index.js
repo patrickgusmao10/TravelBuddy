@@ -144,6 +144,13 @@ const routes = [
   },
 
   {
+    path: '/notifications',
+    name: 'notifications',
+    component: () => import('../views/NotificationsView.vue'),
+    meta: { requiresAuth: true }
+  },
+
+  {
     path: '/feed/seguindo',
     name: 'following-feed',
     component: () => import('../views/FollowingFeedView.vue'),

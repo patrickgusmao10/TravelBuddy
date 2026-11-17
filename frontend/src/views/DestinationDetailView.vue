@@ -2,14 +2,17 @@
 import { computed, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { useAuthenticatedAction } from '../composables/useAuthenticatedAction'
+import { useToast } from '../composables/useToast'
 import { getDestinationById } from '../services/userService'
 import { useAsyncData } from '../composables/useAsyncData'
 import { getDestinationImageUrl, getProfilePictureUrl } from '../utils/media'
 import LikeButton from '../components/destination/LikeButton.vue'
 import CommentSection from '../components/destination/CommentSection.vue'
 import AddToCollectionModal from '../components/collection/AddToCollectionModal.vue'
+import ReportDestinationModal from '../components/destination/ReportDestinationModal.vue'
 
 const route = useRoute()
+const toast = useToast()
 
 const { data: destination, isLoading, error } = useAsyncData(
   () => getDestinationById(route.params.id),
@@ -23,6 +26,17 @@ const isSaving = ref(false)
 const { run: openSaveModal } = useAuthenticatedAction(async () => {
   isSaving.value = true
 })
+
+const isReporting = ref(false)
+
+const { run: openReportModal } = useAuthenticatedAction(async () => {
+  isReporting.value = true
+})
+
+function handleReported() {
+  isReporting.value = false
+  toast.success('Denúncia enviada. Obrigado por ajudar a manter a comunidade segura.')
+}
 </script>
 
 <template>
@@ -116,6 +130,15 @@ const { run: openSaveModal } = useAuthenticatedAction(async () => {
             >
               <i class="bi bi-bookmark-plus"></i> Salvar
             </button>
+
+            <button
+              v-if="!isOwner"
+              type="button"
+              class="btn btn-outline-secondary rounded-pill"
+              @click="openReportModal"
+            >
+              <i class="bi bi-flag"></i> Denunciar
+            </button>
           </div>
 
           <CommentSection
@@ -127,6 +150,13 @@ const { run: openSaveModal } = useAuthenticatedAction(async () => {
             v-if="isSaving"
             :destination-id="Number(destination.id)"
             @close="isSaving = false"
+          />
+
+          <ReportDestinationModal
+            v-if="isReporting"
+            :destination-id="Number(destination.id)"
+            @close="isReporting = false"
+            @reported="handleReported"
           />
         </div>
       </div>
