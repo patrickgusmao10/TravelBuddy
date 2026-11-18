@@ -1081,3 +1081,162 @@
 - [x] Lacuna das coleções públicas registrada como decisão de escopo.
 - [x] ZIPs do backend e frontend gerados sem node_modules.
 - [x] Evidências da Aula 13 organizadas na pasta 01 - Docs/atividade13.
+
+
+## Aula 14 — Notificações, Denúncias e Correção do Logout
+
+### Parte A — Backend
+
+#### Etapa 1 — Models e Associações
+
+- [x] Models Notification e Report criados.
+- [x] Associações entre usuários, destinos, notificações e denúncias configuradas.
+- [x] Tabelas notifications e reports criadas no MySQL.
+- [x] Índices, chaves estrangeiras e restrições de integridade conferidos.
+- [x] Exclusão de destinos com tratamento dos registros relacionados validada.
+
+#### Etapa 2 — Notificações
+
+- [x] Service, Controller e rotas de notificações implementados.
+- [x] Listagem paginada de notificações implementada.
+- [x] Consulta da quantidade de notificações não lidas implementada.
+- [x] Marcação individual de notificações como lidas implementada.
+- [x] Notificações integradas às ações de curtir, comentar e seguir.
+- [x] Remoção de notificações relacionadas ao desfazer curtidas e seguidores implementada.
+- [x] Rotas protegidas por autenticação.
+
+#### Etapa 3 — Denúncias
+
+- [x] Service, Controller, Validator e rota de denúncias implementados.
+- [x] Cinco motivos de denúncia configurados.
+- [x] Validação de motivo obrigatório implementada.
+- [x] Restrição de denúncia do próprio destino implementada.
+- [x] Restrição de denúncias duplicadas implementada com HTTP 409.
+- [x] Denúncias não geram notificações para o proprietário do destino.
+
+#### Etapa 4 — Integridade e Correções
+
+- [x] Exclusão de destinos com limpeza de notificações e denúncias relacionadas.
+- [x] Integridade referencial validada no MySQL.
+- [x] Correção da ordem dos middlewares de CORS aplicada.
+- [x] API iniciando e sincronizando o banco sem erros.
+
+#### Etapa 5 — Testes da API
+
+- [x] Listagem de notificações testada.
+- [x] Contagem de notificações não lidas testada.
+- [x] Marcação de notificações como lidas testada.
+- [x] Notificações de curtidas, comentários e seguidores testadas.
+- [x] Curtir/descurtir e seguir/deixar de seguir validados.
+- [x] Envio de denúncia válida testado.
+- [x] Tentativa de denúncia duplicada validada.
+- [x] Restrições de denúncia do próprio destino validadas.
+- [x] Exclusão de destino com registros relacionados testada.
+- [x] Consultas de integridade executadas no MySQL.
+- [x] Testes de regressão do backend concluídos.
+
+### Parte B — Frontend
+
+#### Etapa 1 — Services, Constantes e Store
+
+- [x] notificationService.js criado.
+- [x] reportService.js criado.
+- [x] Constantes de notificações e motivos de denúncia configuradas.
+- [x] Store de notificações criada com Pinia.
+- [x] Polling configurado para 30 segundos.
+- [x] Atualização imediata ao iniciar o polling implementada.
+- [x] Polling interrompido no logout.
+- [x] Polling pausado quando a aba está oculta.
+- [x] Proteção contra respostas antigas implementada.
+
+#### Etapa 2 — Navbar e Sino de Notificações
+
+- [x] Sino de notificações integrado à Navbar.
+- [x] Sino exibido somente para usuários autenticados.
+- [x] Contador de notificações não lidas implementado.
+- [x] Exibição de 99+ para contagens superiores a 99.
+- [x] Atributo aria-label configurado.
+- [x] Polling integrado ao estado de autenticação.
+- [x] Prevenção de múltiplos temporizadores implementada.
+
+#### Etapa 3 — Tela de Notificações
+
+- [x] NotificationsView.vue criada.
+- [x] Rota /notifications protegida por autenticação.
+- [x] Listagem paginada de notificações implementada.
+- [x] Notificações não lidas destacadas visualmente.
+- [x] Botão Marcar como lida implementado.
+- [x] Atualização otimista com runOptimistic implementada.
+- [x] Rollback em caso de falha implementado.
+- [x] Bloqueio de requisições duplicadas por notificação implementado.
+- [x] Navegação para perfil ou detalhe do destino implementada.
+- [x] Botão Atualizar implementado.
+- [x] Botão Carregar mais notificações implementado.
+- [x] Estado vazio da listagem implementado.
+
+#### Etapa 4 — Denúncias de Destinos
+
+- [x] ReportDestinationModal.vue criado.
+- [x] Cinco motivos de denúncia apresentados no modal.
+- [x] Seleção única de motivo implementada.
+- [x] Validação de motivo obrigatório implementada.
+- [x] Erros da API exibidos dentro do modal.
+- [x] Envio de denúncias configurado com silent: true.
+- [x] Botão Denunciar integrado ao detalhe do destino.
+- [x] Botão Denunciar ocultado para o proprietário.
+- [x] Redirecionamento de visitantes para login implementado.
+- [x] Toast de sucesso exibido após denúncia.
+- [x] Modal bloqueado durante o envio.
+- [x] Formulário reiniciado a cada abertura.
+
+#### Etapa 5 — Correção do Logout
+
+- [x] authService.js atualizado para enviar undefined no lugar de null.
+- [x] Configuração silent: true preservada.
+- [x] Logout integrado à interrupção do polling.
+- [x] Correção do erro de CORS no logout validada.
+
+#### Etapa 6 — Testes do Frontend
+
+- [x] Sino e contador de notificações validados.
+- [x] Atualização automática do contador validada.
+- [x] Polling após login e logout validado.
+- [x] Pausa do polling em aba oculta validada.
+- [x] Listagem e paginação de notificações validadas.
+- [x] Marcação otimista como lida validada.
+- [x] Rollback e prevenção de requisições duplicadas validados.
+- [x] Navegação pelas notificações validada.
+- [x] Atualização manual da lista validada.
+- [x] Modal de denúncia e validação de motivo testados.
+- [x] Tratamento de erro e denúncia duplicada testados.
+- [x] Toast de sucesso da denúncia validado.
+- [x] Visibilidade do botão Denunciar validada.
+- [x] Login e logout testados sem erros inesperados.
+- [x] Testes de regressão das Aulas 1 a 13 realizados.
+- [x] Console do navegador verificado sem erros inesperados.
+
+### Evidências da Aula 14
+
+- [x] Prints dos testes da API registrados.
+- [x] Evidências das tabelas notifications e reports registradas.
+- [x] Prints da Navbar com notificações registrados.
+- [x] Prints da tela de notificações registrados.
+- [x] Prints de marcação como lida registrados.
+- [x] Prints do modal de denúncia registrados.
+- [x] Prints dos testes de denúncia registrados.
+- [x] Evidências organizadas em 01 - Docs/atividade14.
+
+### Documentação e Entrega
+
+- [x] Backend da Aula 14 implementado.
+- [x] Frontend da Aula 14 implementado.
+- [x] Testes previstos no roteiro executados.
+- [x] Pendências das próximas aulas identificadas conforme o roteiro.
+- [x] Constante POLL_MS mantida em 30000.
+- [x] Alterações temporárias de testes removidas.
+- [x] checklists.md atualizado com a Aula 14.
+- [x] Evidências da Aula 14 organizadas.
+
+### Status
+
+**Aula 14 — Desenvolvimento, testes, documentação e evidências concluídos.**
