@@ -1,4 +1,3 @@
-
 const User = require('./userModel');
 const Destination = require('../destination/destinationModel');
 const bcrypt = require('bcryptjs');
@@ -79,6 +78,12 @@ async function loginUser(login, password) {
 
   if (!user || !(await bcrypt.compare(password, user.password))) {
     throw new Error('E-mail/Usuário ou senha incorretos.');
+  }
+
+  if (user.isBlocked) {
+    const error = new Error('Sua conta foi bloqueada. Entre em contato com a administração.');
+    error.status = 403;
+    throw error;
   }
 
   return user;

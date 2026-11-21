@@ -29,6 +29,13 @@ module.exports = {
         }
     },
     REPORT: {
-        REASONS: ['inappropriate_content', 'harassment', 'spam', 'copyright', 'other']
+        REASONS: ['inappropriate_content', 'harassment', 'spam', 'copyright', 'other'],
+        STATUS: {
+            PENDING: 'pending',
+            REVIEWED: 'reviewed'
+        }
+    },
+    ADMIN: {
+        REPORT_FILTERS: ['pending', 'reviewed', 'all']
     }
 };

@@ -15,6 +15,7 @@ var followRoutes = require('./modules/follow/followRoutes');
 var collectionRoutes = require('./modules/collection/collectionRoutes');
 var notificationRoutes = require('./modules/notification/notificationRoutes');
 var reportRoutes = require('./modules/report/reportRoutes');
+var adminRoutes = require('./modules/admin/adminRoutes');
 
 require('./config/associations');
 
@@ -41,6 +42,7 @@ app.use('/api', followRoutes);
 app.use('/api', collectionRoutes);
 app.use('/api', notificationRoutes);
 app.use('/api', reportRoutes);
+app.use('/api', adminRoutes);
 
 app.use((req, res) => {
   res.status(404).json({
