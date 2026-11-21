@@ -28,6 +28,8 @@ O comportamento `CASCADE` exclui automaticamente os registros dependentes quando
 
 O polling consulta periodicamente a quantidade de notificações não lidas, utilizando um intervalo de 30 segundos para manter o contador atualizado sem realizar requisições excessivas. Ele é iniciado quando o usuário entra na conta e interrompido ao sair. A condição `if (timerId !== null)` impede a criação de múltiplos intervalos simultâneos. Além disso, quando a aba do navegador está escondida, as consultas periódicas são ignoradas, sendo realizada uma atualização quando a aba volta a ficar visível.
 
+A decisão de escopo da Aula 14 foi manter a atualização automática somente para o contador de notificações não lidas exibido no sino da Navbar. A listagem da tela de notificações não utiliza polling e é atualizada manualmente pelo botão "Atualizar", evitando consultas periódicas desnecessárias para carregar a lista completa.
+
 ## 8. O que é a condição de corrida do contador e por que lastRefreshId é atualizado?
 
 A condição de corrida ocorre quando uma consulta antiga do polling demora para responder e acaba sobrescrevendo um contador que já foi atualizado por uma ação mais recente. Por exemplo, depois de marcar uma notificação como lida, uma resposta antiga poderia restaurar incorretamente a quantidade anterior. Para evitar isso, cada atualização recebe um identificador, e somente a resposta mais recente pode alterar o estado. A função `setUnreadCount` também incrementa `lastRefreshId` para invalidar respostas antigas que ainda estejam pendentes.

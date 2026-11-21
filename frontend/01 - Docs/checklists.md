@@ -1231,11 +1231,13 @@
 - [x] Backend da Aula 14 implementado.
 - [x] Frontend da Aula 14 implementado.
 - [x] Testes previstos no roteiro executados.
-- [x] Pendências das próximas aulas identificadas conforme o roteiro.
+- [x] Escopo da Aula 14 revisado, mantendo somente as funcionalidades e os testes previstos no roteiro do professor.
 - [x] Constante POLL_MS mantida em 30000.
 - [x] Alterações temporárias de testes removidas.
 - [x] checklists.md atualizado com a Aula 14.
 - [x] Evidências da Aula 14 organizadas.
+- [x] Decisão técnica sobre o polling de notificações registrada, justificando o intervalo de 30 segundos, a pausa em abas ocultas e a interrupção no logout.
+- [x] Decisão de escopo registrada no respostas.md: somente o contador do sino utiliza polling; a lista de notificações é atualizada manualmente pelo botão Atualizar.
 
 ### Status
 
