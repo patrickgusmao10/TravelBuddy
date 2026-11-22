@@ -30,7 +30,11 @@ O `escapeLike` foi extraído nesta aula porque as buscas administrativas precisa
 
 ## 8. O que os dois testes de controle demonstraram?
 
-O primeiro teste demonstrou que uma implementação que confia somente no JWT pode continuar aceitando o token de um usuário bloqueado, evidenciando a necessidade de consultar a situação atual da conta no banco de dados. O segundo demonstrou que um usuário comum não consegue acessar recursos administrativos, mesmo estando autenticado. Esses testes comprovam a importância de verificar tanto a situação atual do usuário quanto suas permissões antes de permitir operações protegidas.
+O primeiro teste demonstrou que, ao desativar temporariamente a verificação de `isBlocked`, um usuário bloqueado conseguiu acessar uma rota protegida utilizando um token emitido antes do bloqueio, recebendo HTTP 200. Após restaurar a verificação, o mesmo token passou a receber HTTP 401.
+
+O segundo teste demonstrou que, ao remover temporariamente a guarda `isAdmin`, um usuário comum autenticado conseguiu acessar o dashboard administrativo, recebendo HTTP 200. Após restaurar a guarda, a mesma requisição retornou HTTP 403.
+
+Os testes evidenciaram a importância de consultar o estado atual do usuário no banco de dados e validar suas permissões em cada requisição.
 
 ## 9. O que a guarda de rota do frontend protege e o que não protege?
 

@@ -1423,6 +1423,16 @@
 - [x] Alterações temporárias de testes removidas.
 - [x] Escopo mantido conforme o roteiro do professor.
 - [x] Alterações do backend enviadas ao GitHub.
+- [x] Ajustes finais da Aula 15 enviados ao GitHub.
+
+### Checagem de Alcançabilidade — Aula 15
+
+- [x] Acesso ao painel administrativo pela navegação da aplicação.
+- [x] Acesso ao dashboard e à listagem de denúncias.
+- [x] Navegação entre as abas Dashboard, Denúncias, Usuários e Destinos.
+- [x] Acesso aos filtros e à revisão de denúncias.
+- [x] Acesso à pesquisa e ao bloqueio/desbloqueio de usuários.
+- [x] Acesso à pesquisa e à exclusão de destinos.
 
 ### Status
 
