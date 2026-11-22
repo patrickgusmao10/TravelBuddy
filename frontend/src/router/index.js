@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth } from '../composables/useAuth'
+import { useToast } from '../composables/useToast'
 
 const routes = [
   {
@@ -165,37 +166,41 @@ const routes = [
 
   {
     path: '/admin',
-    name: 'admin-dashboard',
-    component: () => import('../views/admin/AdminDashboardView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true }
-  },
-
-  {
-    path: '/admin/destinos',
-    name: 'admin-destinations',
-    component: () => import('../views/admin/AdminDestinationsView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true }
-  },
-
-  {
-    path: '/admin/categorias',
-    name: 'admin-categories',
-    component: () => import('../views/admin/AdminCategoriesView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true }
-  },
-
-  {
-    path: '/admin/moderacao',
-    name: 'admin-moderation',
-    component: () => import('../views/admin/AdminModerationView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true }
-  },
-
-  {
-    path: '/admin/usuarios',
-    name: 'admin-users',
-    component: () => import('../views/admin/AdminUsersView.vue'),
-    meta: { requiresAuth: true, requiresAdmin: true }
+    component: () => import('../components/layout/AdminLayout.vue'),
+    redirect: { name: 'admin-dashboard' },
+    meta: { requiresAuth: true, requiresAdmin: true },
+    children: [
+      {
+        path: 'dashboard',
+        name: 'admin-dashboard',
+        component: () => import('../views/admin/AdminDashboardView.vue')
+      },
+      {
+        path: 'reports',
+        name: 'admin-reports',
+        component: () => import('../views/admin/AdminReportsView.vue')
+      },
+      {
+        path: 'usuarios',
+        name: 'admin-users',
+        component: () => import('../views/admin/AdminUsersView.vue')
+      },
+      {
+        path: 'destinos',
+        name: 'admin-destinations',
+        component: () => import('../views/admin/AdminDestinationsView.vue')
+      },
+      {
+        path: 'categorias',
+        name: 'admin-categories',
+        component: () => import('../views/admin/AdminCategoriesView.vue')
+      },
+      {
+        path: 'moderacao',
+        name: 'admin-moderation',
+        component: () => import('../views/admin/AdminModerationView.vue')
+      }
+    ]
   },
 
   {
@@ -215,10 +220,16 @@ const router = createRouter({
 })
 
 router.beforeEach((to) => {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, currentUser } = useAuth()
 
   if (to.meta.requiresAuth && !isAuthenticated.value) {
     return { name: 'login', query: { redirect: to.fullPath } }
+  }
+
+  // Esta checagem só poupa a pessoa de ver uma tela vazia: quem protege os DADOS é a API (403).
+  if (to.meta.requiresAdmin && !currentUser.value?.isAdmin) {
+    useToast().error('Você não tem permissão para acessar a administração.')
+    return { name: 'general-feed' }
   }
 })
 

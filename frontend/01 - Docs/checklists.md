@@ -1242,3 +1242,188 @@
 ### Status
 
 **Aula 14 — Desenvolvimento, testes, documentação e evidências concluídos.**
+
+## Aula 15 — Painel Administrativo, Autorização e Moderação
+
+### Parte A — Backend
+
+#### Etapa 1 — Preparação e Banco de Dados
+
+- [x] Projeto TravelBuddy identificado como Grupo B.
+- [x] Campo isAdmin configurado no model User.
+- [x] Campo isBlocked configurado no model User.
+- [x] Campo status adicionado ao model Report com valor padrão.
+- [x] Campo reviewedAt adicionado ao model Report.
+- [x] Índice para consulta de denúncias por situação configurado.
+- [x] Estrutura da tabela de denúncias conferida no MySQL.
+- [x] Contagem de denúncias por situação validada.
+
+#### Etapa 2 — Autenticação e Autorização
+
+- [x] Middleware isAuthenticated atualizado para consultar o usuário no banco.
+- [x] Verificação de contas bloqueadas implementada.
+- [x] Verificação de contas excluídas implementada.
+- [x] Middleware isAdmin implementado.
+- [x] Autorização administrativa baseada nas permissões atuais do banco.
+- [x] Ordem isAuthenticated → isAdmin aplicada às rotas administrativas.
+- [x] Script scripts/setAdmin.js implementado.
+- [x] Promoção administrativa realizada pelo script, sem rota pública.
+- [x] Bloqueio de usuário verificado no login.
+- [x] Respostas HTTP 401 e 403 tratadas conforme o contexto.
+
+#### Etapa 3 — Módulo Administrativo
+
+- [x] Módulo admin implementado com Service, Controller e Routes.
+- [x] Rotas administrativas registradas no app.js.
+- [x] Dashboard administrativo implementado.
+- [x] Indicadores de usuários, destinos e denúncias implementados.
+- [x] Listagem paginada de denúncias implementada.
+- [x] Filtro por situação das denúncias implementado.
+- [x] Revisão de denúncias implementada.
+- [x] Revisão idempotente implementada.
+- [x] Atualização do registro com reload() implementada.
+- [x] Listagem administrativa de usuários implementada.
+- [x] Busca de usuários implementada.
+- [x] Bloqueio e desbloqueio de usuários implementados.
+- [x] Listagem administrativa de destinos implementada.
+- [x] Busca de destinos implementada.
+- [x] Contagem de denúncias associadas aos destinos implementada.
+- [x] Exclusão administrativa de destinos implementada.
+- [x] Limpeza dos registros relacionados à exclusão preservada.
+- [x] Utilitário utils/escapeLike.js criado e reutilizado nas buscas.
+- [x] Paginação administrativa implementada.
+
+#### Etapa 4 — Testes de Controle e Segurança
+
+- [x] Teste de controle de usuário bloqueado realizado.
+- [x] Teste de controle de permissões administrativas realizado.
+- [x] Acesso sem autenticação retorna HTTP 401.
+- [x] Acesso de usuário comum às rotas administrativas retorna HTTP 403.
+- [x] Acesso de administrador autenticado validado.
+- [x] Proteção administrativa validada independentemente do frontend.
+- [x] Alterações de permissões verificadas no banco de dados.
+
+#### Etapa 5 — Testes da API
+
+- [x] GET /api/admin/dashboard testado.
+- [x] GET /api/admin/reports testado.
+- [x] PATCH /api/admin/reports/:id/review testado.
+- [x] GET /api/admin/users testado.
+- [x] PATCH /api/admin/users/:id/block testado.
+- [x] GET /api/admin/destinations testado.
+- [x] DELETE /api/admin/destinations/:id testado.
+- [x] Rota administrativa inexistente testada.
+- [x] Testes com ausência de token realizados.
+- [x] Testes com usuário comum realizados.
+- [x] Testes com administrador realizados.
+- [x] Filtros e paginação dos endpoints administrativos validados.
+
+### Parte B — Frontend
+
+#### Etapa 1 — Preparação e Navegação
+
+- [x] adminService.js criado.
+- [x] Rotas administrativas configuradas no Vue Router.
+- [x] Guarda de navegação administrativa implementada.
+- [x] Verificação de isAdmin integrada à navegação.
+- [x] Redirecionamento de usuários não autenticados implementado.
+- [x] Aviso de falta de permissão para usuários comuns implementado.
+- [x] Navegação administrativa integrada ao layout.
+- [x] Acesso ao painel disponível para administradores.
+
+#### Etapa 2 — Componentes e Paginação
+
+- [x] Componente ConfirmModal.vue implementado.
+- [x] Confirmação de ações administrativas implementada.
+- [x] Cancelamento das operações implementado.
+- [x] Modal permanece aberto quando a requisição falha.
+- [x] Estados de carregamento implementados.
+- [x] Bloqueio de ações simultâneas implementado.
+- [x] usePaginatedList.js reutilizado nas listagens administrativas.
+- [x] Paginação e botão Carregar mais implementados.
+- [x] Atualização manual das listagens implementada.
+- [x] Busca com debounce implementada.
+
+#### Etapa 3 — Telas Administrativas
+
+- [x] Tela Dashboard implementada.
+- [x] Cartões de indicadores exibindo dados reais.
+- [x] Denúncias pendentes destacadas no Dashboard.
+- [x] Tela Denúncias implementada.
+- [x] Filtro de denúncias por situação implementado.
+- [x] Motivos de denúncia apresentados em português.
+- [x] Selos de situação implementados.
+- [x] Ação de revisar denúncia integrada à API.
+- [x] Estado Salvando... exibido durante a revisão.
+- [x] Tela Usuários implementada.
+- [x] Busca de usuários com debounce implementada.
+- [x] Bloqueio de usuários com confirmação implementado.
+- [x] Desbloqueio de usuários implementado.
+- [x] Selos de usuários bloqueados implementados.
+- [x] Tela Itens adaptada para os destinos do TravelBuddy.
+- [x] Busca administrativa de destinos implementada.
+- [x] Contagem de denúncias exibida nos destinos.
+- [x] Exclusão de destinos com confirmação implementada.
+- [x] Consequências da exclusão descritas no modal.
+
+#### Etapa 4 — Testes do Frontend
+
+- [x] Guarda de rota testada com usuário comum.
+- [x] Manipulação de isAdmin no localStorage testada.
+- [x] Proteção da API com HTTP 403 validada.
+- [x] Dashboard administrativo validado.
+- [x] Filtros e listagem de denúncias validados.
+- [x] Revisão de denúncia testada com Slow 3G.
+- [x] Paginação por offset testada com PAGE_SIZE = 2.
+- [x] Limitação de pulo de registros identificada.
+- [x] PAGE_SIZE restaurado após o teste.
+- [x] Busca de usuários com debounce validada no Network.
+- [x] Busca com caracteres especiais testada.
+- [x] Cancelamento do bloqueio testado.
+- [x] Falha de rede durante bloqueio testada.
+- [x] Bloqueio de usuário realizado com sucesso.
+- [x] Login de usuário bloqueado testado.
+- [x] Desbloqueio de usuário validado.
+- [x] Busca administrativa de destinos validada.
+- [x] Cancelamento da exclusão testado.
+- [x] Falha de rede durante exclusão testada.
+- [x] Exclusão administrativa de destino validada.
+- [x] Remoção das denúncias relacionadas validada.
+- [x] Testes de regressão das funcionalidades anteriores realizados.
+- [x] Tratamento de sessão expirada validado.
+- [x] Console do navegador verificado sem erros inesperados.
+
+### Evidências da Aula 15
+
+- [x] guarda-comum.jpg registrado.
+- [x] guarda-localstorage.jpg registrado.
+- [x] dashboard.jpg registrado.
+- [x] denuncias-lista.jpg registrado.
+- [x] revisar-lenta.jpg registrado.
+- [x] pulo-paginacao.jpg registrado.
+- [x] usuarios-busca.jpg registrado.
+- [x] bloquear-modal.jpg registrado.
+- [x] bloqueado-login.jpg registrado.
+- [x] itens-excluir.jpg registrado.
+- [x] banco-denuncias.jpg registrado.
+- [x] controle-bloqueio.jpg registrado.
+- [x] controle-isadmin.jpg registrado.
+- [x] Prints dos testes curl da Parte A, Etapa 5 registrados.
+- [x] Evidências organizadas em 01 - Docs/atividade15.
+
+### Documentação e Entrega
+
+- [x] Backend da Aula 15 implementado.
+- [x] Frontend da Aula 15 implementado.
+- [x] Testes previstos no roteiro executados.
+- [x] respostas.md criado com as dez respostas da Seção 1.
+- [x] checklists.md atualizado com a Aula 15.
+- [x] Limitação da paginação por offset documentada.
+- [x] Evidências da Aula 15 organizadas.
+- [x] Alterações temporárias de testes removidas.
+- [x] Escopo mantido conforme o roteiro do professor.
+- [x] Alterações do backend enviadas ao GitHub.
+
+### Status
+
+**Aula 15 — Desenvolvimento, testes, documentação e evidências concluídos.**

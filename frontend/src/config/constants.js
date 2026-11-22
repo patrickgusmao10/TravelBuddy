@@ -50,3 +50,11 @@ export const REPORT_REASONS = [
   { value: 'copyright', label: 'Violação de direitos autorais' },
   { value: 'other', label: 'Outro' },
 ]
+
+// Painel de administração: filtros da lista de denúncias — os valores
+// (value) devem combinar com ADMIN.REPORT_FILTERS da API
+export const REPORT_FILTERS = [
+  { value: 'pending', label: 'Pendentes' },
+  { value: 'reviewed', label: 'Revisadas' },
+  { value: 'all', label: 'Todas' },
+]
